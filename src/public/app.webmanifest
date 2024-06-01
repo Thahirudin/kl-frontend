@@ -1,0 +1,26 @@
+{
+  "theme_color": "#0ea5e9",
+  "background_color": "#0ea5e9",
+  "start_url": "index.html?launcher=true",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "./logo/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "./logo/icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "en-US",
+  "name": "Kids Library",
+  "short_name": "Kids Library",
+  "description": "Kids Library adalah inisiatif untuk meningkatkan Sumber Daya Manusia Berkualitas melalui bahan bacaan platform digital. Untuk meningkatkan akses terhadap literatur anak-anak berkualitas, yang dapat mempengaruhi perkembangan intelektual dan kreatifitas."
+}
