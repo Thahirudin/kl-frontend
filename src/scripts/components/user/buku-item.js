@@ -76,13 +76,23 @@ a{
   }
 
   setBuku(value) {
-    this._bukus.id = value.id;
-    this._bukus.judul = value.judul;
-    this._bukus.image_url = value.image_url;
-    this._bukus.kategori = value.kategori;
-    this._bukus.ringkasan = value.ringkasan;
-    this._bukus.penulis = value.penulis;
-    this._bukus.read_url = value.read_url;
+    if (value.Buku) {
+      this._bukus.id = value.Buku.id;
+      this._bukus.judul = value.Buku.judul;
+      this._bukus.image_url = value.Buku.imageUrl;
+      this._bukus.kategori = value.Buku.kategori;
+      this._bukus.ringkasan = value.Buku.ringkasan;
+      this._bukus.penulis = value.Buku.penulis;
+      this._bukus.read_url = value.Buku.readUrl;
+    } else {
+      this._bukus.id = value.id;
+      this._bukus.judul = value.judul;
+      this._bukus.image_url = value.imageUrl;
+      this._bukus.kategori = value.kategori;
+      this._bukus.ringkasan = value.ringkasan;
+      this._bukus.penulis = value.penulis;
+      this._bukus.read_url = value.readUrl;
+    }
     this.render();
   }
 
@@ -95,7 +105,7 @@ a{
     this._updateStyle();
     this._shadowRoot.appendChild(this._style);
     this._shadowRoot.innerHTML += `
-        <a href="#/detail-buku">
+        <a href="#/detail-buku/${this._bukus.id}">
             <div class="buku_card">
               <div class="buku_img">
                 <img

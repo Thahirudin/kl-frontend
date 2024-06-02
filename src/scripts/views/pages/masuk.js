@@ -1,4 +1,8 @@
 /* eslint-disable no-alert */
+import { jwtDecode } from 'jwt-decode';
+import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
+import isUserLoggedIn from '../../utils/auth';
+
 const Masuk = {
   async render() {
     return `
@@ -7,7 +11,7 @@ const Masuk = {
           <img src="./logo/logo.png" alt="Kids Library" class="logo" />
           <form id="loginForm">
             <div class="input-container">
-              <input type="email" id="email" placeholder="Email" required />
+              <input type="text" id="username" placeholder="Username" required />
             </div>
             <div class="input-container">
               <input type="password" id="password" placeholder="Password" required />
@@ -21,36 +25,50 @@ const Masuk = {
   },
 
   async afterRender() {
+    if (isUserLoggedIn()) {
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.role;
+
+      if (userRole === 'Admin') {
+        window.location.href = '#/dashboard';
+      } else {
+        window.location.href = '#/favorit';
+      }
+    }
     const loginForm = document.getElementById('loginForm');
     loginForm.addEventListener('submit', async (event) => {
       event.preventDefault(); // Mencegah form submit default
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const data = {
+        username,
+        password,
+      };
 
       try {
-        const response = await fetch('https://kids-library-production.up.railway.app/users/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Login failed');
+        const result = await KidsLibraryDbSource.login(data);
+        const { token } = result;
+        if (token) {
+          localStorage.setItem('token', token);
+          const decodedToken = jwtDecode(token);
+          const userRole = decodedToken.role;
+          const navBarElement = document.querySelector('nav-bar');
+          navBarElement.remove();
+          const header = document.querySelector('header');
+          header.innerHTML = '<nav-bar></nav-bar>';
+          if (userRole === 'Admin') {
+            window.location.href = '/admin#/dashboard';
+          } else {
+            window.location.href = '#/favorit';
+          }
+        } else {
+          throw new Error('Token not received');
         }
-
-        const data = await response.json();
-        const { token } = data; // Asumsi token ada di data.token
-
-        // Simpan token (misalnya, ke localStorage)
-        localStorage.setItem('token', token);
-        alert('Login berhasil!');
-        window.location.href = './#/favorit';
       } catch (error) {
-        console.error('Error:', error);
-        alert('Login gagal. Silakan coba lagi.');
+        console.error('Login error', error);
+        alert(`Login gagal: ${error.message}`); // Tampilkan pesan kesalahan
       }
     });
   },

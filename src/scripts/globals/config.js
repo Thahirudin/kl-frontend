@@ -1,5 +1,5 @@
 const CONFIG = {
-  BASE_URL: 'https://kids-library-production.up.railway.app',
+  BASE_URL: 'http://localhost:3000',
   DEFAULT_LANGUAGE: 'en-us',
   CACHE_NAME: new Date().toISOString(),
 };

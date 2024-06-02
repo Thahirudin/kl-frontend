@@ -13,7 +13,7 @@ const routes = {
   '/buku': Buku,
   '/favorit': Favorit,
   '/daftar': Daftar,
-  '/detail-buku': DetailBuku,
+  '/detail-buku/:id': DetailBuku,
   '/tentang-kami': Tentangkami,
 };
 

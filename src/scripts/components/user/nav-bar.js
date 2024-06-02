@@ -1,6 +1,9 @@
+import isUserLoggedIn from '../../utils/auth';
+
 class navBar extends HTMLElement {
   constructor() {
     super();
+    this.isLoggedIn = isUserLoggedIn();
     this.render();
   }
 
@@ -51,6 +54,24 @@ class navBar extends HTMLElement {
         </div>
       </nav>
         `;
+    const buttonContainer = this.querySelector('.nav_login_register');
+
+    // Tampilkan tombol login/logout berdasarkan status login pengguna
+    if (this.isLoggedIn) {
+      buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button> <a class="nav_register" href="./#/profil">Profil</a';
+    } else {
+      buttonContainer.innerHTML = '<a class="nav_login" href="./#/masuk">Masuk</a> <a class="nav_register" href="./#/daftar">Daftar</a> ';
+    }
+
+    // Tambahkan event listener untuk tombol logout jika pengguna sudah login
+    if (this.isLoggedIn) {
+      const logoutButton = this.querySelector('#logoutButton');
+      logoutButton.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        buttonContainer.innerHTML = '<a class="nav_login" href="./#/masuk">Masuk</a> <a class="nav_register" href="./#/daftar">Daftar</a> ';
+        window.location.href = './#/masuk'; // Arahkan ke halaman masuk setelah logout
+      });
+    }
   }
 }
 

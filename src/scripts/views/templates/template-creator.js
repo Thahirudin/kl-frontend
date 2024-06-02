@@ -10,7 +10,46 @@ const createLikedButtonTemplate = () => `
   </button>
 `;
 
+const createBukuDetailTemplate = (buku) => `
+        <div class="buku_container">
+          <div class="buku_img">
+            <img
+              src="${buku.imageUrl}"
+              alt="gambar buku"
+            />
+          </div>
+          <div class="buku_body">
+            <h1>
+              ${buku.judul}
+            </h1>
+            <div class="buku_url">
+              <a href="${buku.readUrl}">Baca Buku</a>
+            </div>
+            <div class="detail_buku">
+              <div class="card_detail">
+                <h2>Kategori</h2>
+                <div>
+                  <p>${buku.kategori}</p>
+                </div>
+              </div>
+              <div class="card_detail">
+                <h2>Penulis</h2>
+                <div>
+                  <p>${buku.penulis}</p>
+                </div>
+              </div>
+              <div class="card_detail">
+                <p>
+                  ${buku.ringkasan}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+`;
+
 export {
   createLikeButtonTemplate,
   createLikedButtonTemplate,
+  createBukuDetailTemplate,
 };

@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+import { jwtDecode } from 'jwt-decode';
 import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 import isUserLoggedIn from '../../utils/auth';
 
@@ -35,10 +37,15 @@ const Favorit = {
 
   async afterRender() {
     if (!isUserLoggedIn()) {
-      window.location.href = '#/masuk'; // Alihkan ke halaman login jika belum login
+      window.location.href = '#/masuk'; // Alihkan ke halaman login jika belum login atau token kedaluwarsa
       return;
     }
-    this._bukuList = await KidsLibraryDbSource.getAllBuku();
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken.id);
+    const response = await KidsLibraryDbSource.getFavoritByUserId(decodedToken.id);
+    console.log(response);
+    this._bukuList = response;
     this._filteredBukuList = [...this._bukuList];
     this._currentPage = 1;
 

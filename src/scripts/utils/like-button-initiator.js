@@ -1,6 +1,5 @@
 import { createLikeButtonTemplate, createLikedButtonTemplate } from '../views/templates/template-creator';
-
-const API_URL = 'https://kids-library-production.up.railway.app/favorit';
+import KidsLibraryDbSource from '../data/kidslibrarydb-source';
 
 const LikeButtonInitiator = {
   async init({ likeButtonContainer, buku, userId }) {
@@ -19,15 +18,12 @@ const LikeButtonInitiator = {
     }
   },
 
-  async _isBukuExist(bukuId) {
+  async _isBukuExist(bukuid) {
     try {
-      const response = await fetch(`${API_URL}/${this._userId}`);
-      if (!response.ok) {
-        console.error('Failed to fetch favorites:', response.statusText);
-        return false;
-      }
-      const favorites = await response.json();
-      return favorites.some((favorite) => favorite.bukuId === bukuId);
+      const response = await KidsLibraryDbSource.getFavoritByUserId(this._userId);
+      const bukuIdNumber = Number(bukuid);
+      const exists = response.some((favorit) => favorit.bukuId === bukuIdNumber);
+      return exists;
     } catch (error) {
       console.error('Error checking if book exists:', error);
       return false;
@@ -35,47 +31,27 @@ const LikeButtonInitiator = {
   },
 
   async _addToFavorites() {
-    const payload = {
+    const data = {
       userId: this._userId,
       bukuId: this._buku.id,
     };
-
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error('Failed to add to favorites:', errorMessage);
-      }
+      const result = await KidsLibraryDbSource.addFavorit(data);
+      console.log(result);
     } catch (error) {
-      console.error('Error adding to favorites:', error);
+      console.error(error.message);
     }
   },
 
   async _removeFromFavorites() {
     try {
-      const response = await fetch(`${API_URL}/${this._userId}`);
-      if (!response.ok) {
-        console.error('Failed to fetch favorites:', response.statusText);
-        return;
-      }
-      const favorites = await response.json();
-      const favorite = favorites.find((fav) => fav.bukuId === this._buku.id);
+      const response = await KidsLibraryDbSource.getFavoritByUserId(this._userId);
+      console.log('Favorites for removal:', response);
+      const bukuIdNumber = Number(this._buku.id);
+      const favorite = response.find((fav) => fav.bukuId === bukuIdNumber);
       if (favorite) {
-        const deleteResponse = await fetch(`${API_URL}/${favorite.id}`, {
-          method: 'DELETE',
-        });
-
-        if (!deleteResponse.ok) {
-          const errorMessage = await deleteResponse.text();
-          console.error('Failed to remove from favorites:', errorMessage);
-        }
+        const deleteResponse = await KidsLibraryDbSource.removeFavoritById(favorite.id);
+        console.log(deleteResponse);
       }
     } catch (error) {
       console.error('Error removing from favorites:', error);
