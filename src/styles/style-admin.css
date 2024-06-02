@@ -1,0 +1,216 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #344767;
+}
+body {
+  background: url("../public/img/bg-dashboard.jpg");
+  background-repeat: no-repeat;
+}
+header {
+  background-color: white;
+  padding: 1rem 0;
+  box-shadow: 0 0px 10px -1px rgb(0 0 0 / 0.1), 0 0px 10px -2px rgb(0 0 0 / 0.1);
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 90%;
+    margin: 0 auto;
+    .logo {
+      width: 100px;
+    }
+    .logo img {
+      width: 100%;
+    }
+    button {
+      padding: 0.7rem;
+      color: black;
+      background-color: white;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      svg {
+        width: 24px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+aside.open {
+  transform: translate(0, 0);
+}
+aside {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  width: 300px;
+  background-color: white;
+  padding: 1rem;
+  height: 100vh;
+  transform: translate(-950px, 0);
+  transition: transform 0.8s ease-in-out;
+  box-shadow: 0 0px 10px -1px rgb(0 0 0 / 0.1), 0 0px 10px -2px rgb(0 0 0 / 0.1);
+  .logo{
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .logo img {
+    width: 100px;
+  }
+  .menu {
+    list-style: none;
+    display: block;
+    li {
+      margin-bottom: 1rem;
+      a {
+        color: #344767;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0.8rem 1rem;
+        border-radius: 0.8rem;
+        svg {
+          width: 22px;
+        }
+        transition: 0.3s ease-in-out;
+      }
+      a.active,
+      a:hover {
+        background-color: #e0f2fe;
+        font-weight: 700;
+      }
+    }
+  }
+}
+.section_total {
+  display: grid;
+  width: 90%;
+  margin: 1rem auto;
+  gap: 2rem;
+}
+.card_dashboard {
+  background-color: white;
+  box-shadow: 0 0 8px 0 rgb(0 0 0 / 0.25);
+
+  padding: 1rem;
+  border-radius: 0.5rem;
+  .card_title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .card_deskripsi {
+    text-align: center;
+    font-weight: 600;
+    font-size: 3rem;
+  }
+}
+.table_container {
+  width: 90%;
+  margin: 2rem auto;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: 0 0 8px 0 rgb(0 0 0 / 0.25);
+  border-radius: 0.5rem;
+  .tambah_button {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    color: white;
+    background-color: #0284c7;
+    margin: 1rem 0;
+  }
+  .tambah_button:hover {
+    background-color: #0ea5e9;
+    transition: 0.3s ease-in-out;
+  }
+  .table_responsive {
+    overflow-x: auto;
+    table {
+      background-color: white;
+      width: 100%;
+      thead {
+        background-color: #0284c7;
+        tr {
+          border: none;
+        }
+        td {
+          color: white;
+          padding: 0.5rem 1rem;
+        }
+      }
+      tbody {
+        .aksi {
+          display: flex;
+          gap: 0.5rem;
+        }
+        td {
+          padding: 0.5rem 1rem;
+          border-bottom: 1px solid #cbd5e1;
+          a {
+            text-decoration: none;
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            color: white;
+          }
+          .edit_button {
+            background-color: #0284c7;
+          }
+          .edit_button:hover {
+            background-color: #0ea5e9;
+            transition: 0.3s ease-in-out;
+          }
+          .delete_button {
+            background-color: #dc2626;
+          }
+          .delete_button:hover {
+            background-color: #ef4444;
+            transition: 0.3s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 768px) {
+  .section_total {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  body {
+    background-size: cover;
+  }
+}
+@media screen and (min-width: 1200px) {
+  header {
+    display: none;
+  }
+  aside {
+    height: 90vh;
+    top: 4%;
+    border-radius: 1rem;
+    position: sticky;
+    transform: translate(0, 0);
+    transition: transform 0.8s ease-in-out;
+    vertical-align: center;
+    .logo{
+      display: blcok;
+    }
+  }
+  main {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+  }
+  #mainContent {
+    width: 100%;
+  }
+}

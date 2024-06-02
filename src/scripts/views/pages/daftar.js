@@ -1,0 +1,70 @@
+/* eslint-disable max-len */
+/* eslint-disable no-alert */
+import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
+
+const Daftar = {
+  async render() {
+    return `
+    <div class="register-container">
+      <div class="register-box">
+        <img src="./logo/logo.png" alt="Kids Library" class="logo" />
+        <form id="regisForm">
+          <div class="errors"></div>
+          <div class="input-container">
+            <input type="text" placeholder="NAMA" name="nama" id="nama" required/>
+          </div>
+          <div class="input-container">
+            <input type="date" name="taanggalLahir" id="tanggalLahir" required />
+          </div>
+          <div class="input-container">
+            <select name="jk" id="jk">
+              <option value="Laki-Laki">Laki-Laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+          <div class="input-container">
+            <input type="text" placeholder="USERNAME" name="username" id="username" required />
+          </div>
+          <div class="input-container">
+            <input type="password" placeholder="PASSWORD" name="password" id="password" required />
+          </div>
+          <button type="submit">DAFTAR</button>
+          <a href="/#/masuk" class="back-to-login-link">BACK TO LOGIN</a>
+        </form>
+      </div>
+    </div>
+    `;
+  },
+
+  async afterRender() {
+    const errors = document.querySelector('.errors');
+    errors.innerHTML = '';
+    const regisForm = document.getElementById('regisForm');
+
+    regisForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = {
+        nama: document.querySelector('#nama').value,
+        profil: '',
+        tanggalLahir: document.querySelector('#tanggalLahir').value,
+        role: 'User',
+        jk: document.querySelector('#jk').value,
+        username: document.querySelector('#username').value,
+        password: document.querySelector('#password').value,
+      };
+      try {
+        const response = await KidsLibraryDbSource.tambahUser(data);
+        alert(response.message);
+        window.location.href = '/#/masuk';
+      } catch (error) {
+        if (error.messages) {
+          errors.innerHTML = `${error.messages}`;
+        } else {
+          errors.innerHTML = `${error.message}`;
+        }
+      }
+    });
+  },
+};
+
+export default Daftar;
