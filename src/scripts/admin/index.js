@@ -1,4 +1,5 @@
 import 'regenerator-runtime';
+import '../components/admin/aside-bar';
 import '../../styles/style-admin.css';
 import App from '../views/app';
 

@@ -96,6 +96,7 @@ class navBar extends HTMLElement {
         this.isLoggedIn = false;
         this.render();
         window.location.href = '/#/masuk';
+        window.location.reload();
       });
     }
   }

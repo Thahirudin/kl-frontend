@@ -9,19 +9,31 @@ class KidsLibraryDbSource {
 
   static async tambahBuku(data) {
     const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('judul', data.judul);
+    formData.append('kategori', data.kategori);
+    formData.append('ringkasan', data.ringkasan);
+    formData.append('penulis', data.penulis);
+    formData.append('imageUrl', data.imageUrl); // Ini adalah file gambar
+    formData.append('readUrl', data.readUrl);
+
     const response = await fetch(API_ENDPOINT.TAMBAHBUKU, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         token,
       },
-      body: JSON.stringify(data),
+      body: formData, // Mengirimkan FormData sebagai body
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
+
     const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal menambahkan buku');
+      }
+    }
     return responseJson;
   }
 
@@ -151,7 +163,13 @@ class KidsLibraryDbSource {
   }
 
   static async getAllUser() {
-    const response = await fetch(API_ENDPOINT.GETUSER);
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.GETUSER, {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    });
     const responseJson = await response.json();
     return responseJson.users;
   }

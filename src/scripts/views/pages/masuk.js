@@ -32,11 +32,12 @@ const Masuk = {
 
       if (userRole === 'Admin') {
         window.location.href = '/admin#/dashboard';
+        window.location.reload();
       } else {
-        window.location.href = '#/favorit';
+        window.location.href = '/#/favorit';
+        window.location.reload();
       }
     }
-
     const loginForm = document.getElementById('loginForm');
     loginForm.addEventListener('submit', async (event) => {
       event.preventDefault(); // Mencegah form submit default
@@ -51,22 +52,16 @@ const Masuk = {
       try {
         const result = await KidsLibraryDbSource.loginUser(data);
         const { token } = result;
-
         if (token) {
           localStorage.setItem('token', token); // Simpan token di localStorage
-
+          window.dispatchEvent(new CustomEvent('userLoggedIn')); // Kirim event kustom 'userLoggedIn'
           const decodedToken = jwtDecode(token);
           const userRole = decodedToken.role;
-          const headerContainer = document.querySelector('header');
-          const navContainer = document.querySelector('nav-bar');
-          navContainer.remove();
-          headerContainer.innerHTML = `
-            <nav-bar></nav-bar>
-          `;
           if (userRole === 'Admin') {
             window.location.href = '/admin#/dashboard'; // Arahkan ke halaman dashboard
           } else {
-            window.location.href = '#/favorit'; // Arahkan ke halaman favorit
+            window.location.href = '/#/favorit'; // Arahkan ke halaman favorit
+            window.location.reload();
           }
         } else {
           throw new Error('Token not received');

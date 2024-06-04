@@ -67,7 +67,12 @@ aside {
     display: block;
     li {
       margin-bottom: 1rem;
-      a {
+      a, .menu-logout {
+        font-size: 16px;
+        background-color: white;
+        cursor: pointer;
+        border: none;
+        width: 100%;
         color: #344767;
         text-decoration: none;
         display: flex;
@@ -81,7 +86,7 @@ aside {
         transition: 0.3s ease-in-out;
       }
       a.active,
-      a:hover {
+      a:hover, .menu-logout:hover {
         background-color: #e0f2fe;
         font-weight: 700;
       }
@@ -140,9 +145,11 @@ aside {
       thead {
         background-color: #0284c7;
         tr {
+          height: 100%;
           border: none;
         }
         td {
+          height: 100%;
           color: white;
           padding: 0.5rem 1rem;
         }
@@ -150,9 +157,15 @@ aside {
       tbody {
         .aksi {
           display: flex;
+          height: 100%;
           gap: 0.5rem;
         }
+        tr {
+          height: 100%;
+          border: none;
+        }
         td {
+          height: 100%;
           padding: 0.5rem 1rem;
           border-bottom: 1px solid #cbd5e1;
           a {

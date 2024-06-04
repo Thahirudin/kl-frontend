@@ -18,7 +18,10 @@ const Beranda = {
             </div>
           </div>
           <div class="section_one_img">
-            <img src="./img/buku.png" />
+           <picture>
+            <source media="(max-width: 600px)" srcset="./img/buku.png">
+            <img src="./img/buku.png" alt="logo">
+          </picture>
           </div>
         </div>
       </section>
@@ -38,7 +41,10 @@ const Beranda = {
       <section class="reason">
         <div class="reason_body">
           <div class="reason_img">
-            <img src="./img/reason.png" alt="image" />
+          <picture>
+            <source media="(max-width: 600px)" srcset="./img/reason.png">
+            <img src="./img/reason.png" alt="image">
+          </picture>
           </div>
           <div class="reason_reason_content">
             <h1>Mengapa Harus Membaca Buku?</h1>
@@ -67,7 +73,10 @@ const Beranda = {
             </div>
           </div>
           <div class="membaca_img">
-            <img src="./img/membaca.png" alt="image3" />
+          <picture>
+            <source media="(max-width: 600px)" srcset="./img/membaca.png">
+            <img src="./img/membaca.png" alt="image">
+          </picture>
           </div>
         </div>
       </section>

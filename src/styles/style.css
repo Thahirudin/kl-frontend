@@ -76,6 +76,8 @@ nav {
   transition: 0.3s;
 }
 .nav_login, .nav_logout {
+  margin: 1rem 0;
+  width: 100%;
   display: block;
   background-color: #0284c7;
   border:solid 1px #0284c7;
@@ -94,6 +96,7 @@ nav {
 }
 .nav_register {
   background-color: #fff;
+  width: 100%;
   display: block;
   text-align: center;
   min-width: 44px;
@@ -286,6 +289,9 @@ footer {
   background-color: #0284c7;
   color: white;
 }
+.nav_admin.inactive, .nav_user.inactive, .nav_login_register.inactive{
+  display: none;
+}
 .page-number {
   min-width: 2rem;
   cursor: pointer;
@@ -361,7 +367,7 @@ footer {
     align-items: center;
     gap: 20px;
   }
-  .nav_login {
+  .nav_login, .nav_logout {
     margin: 0;
   }
   .login-box,
