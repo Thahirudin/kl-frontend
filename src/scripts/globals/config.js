@@ -1,5 +1,5 @@
 const CONFIG = {
-  BASE_URL: 'http://localhost:3000',
+  BASE_URL: 'https://api-kidslibrary.hierku.my.id',
   DEFAULT_LANGUAGE: 'en-us',
   CACHE_NAME: new Date().toISOString(),
 };

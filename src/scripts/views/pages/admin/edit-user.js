@@ -1,6 +1,6 @@
 const EditUser = {
-    async render() {
-      return `
+  async render() {
+    return `
     <style>
     .form {
         width: 90%;
@@ -126,17 +126,16 @@ const EditUser = {
           </form>
         </div>
       `;
-    },
-  
-    async afterRender() {
-      const menuItems = document.querySelectorAll('.menu a');
-      const menuactive = document.querySelector('.menu-pengguna');
-      menuItems.forEach((item) => {
-        item.classList.remove('active');
-      });
-      menuactive.classList.add('active');
-    },
-  };
-  
-  export default EditUser;
-  
+  },
+
+  async afterRender() {
+    const menuItems = document.querySelectorAll('.menu a');
+    const menuactive = document.querySelector('.menu-pengguna');
+    menuItems.forEach((item) => {
+      item.classList.remove('active');
+    });
+    menuactive.classList.add('active');
+  },
+};
+
+export default EditUser;
