@@ -4,7 +4,7 @@ class KidsLibraryDbSource {
   static async getAllBuku() {
     const response = await fetch(API_ENDPOINT.LISTBUKU);
     const responseJson = await response.json();
-    return responseJson.buku;
+    return responseJson;
   }
 
   static async tambahBuku(data) {
@@ -14,7 +14,7 @@ class KidsLibraryDbSource {
     formData.append('kategori', data.kategori);
     formData.append('ringkasan', data.ringkasan);
     formData.append('penulis', data.penulis);
-    formData.append('imageUrl', data.imageUrl); // Ini adalah file gambar
+    formData.append('image', data.image); // Ini adalah file gambar
     formData.append('readUrl', data.readUrl);
 
     const response = await fetch(API_ENDPOINT.TAMBAHBUKU, {
@@ -37,21 +37,33 @@ class KidsLibraryDbSource {
     return responseJson;
   }
 
-  static async editBuku(data, id) {
+  static async editBuku(data) {
     const token = localStorage.getItem('token');
-    const response = await fetch(API_ENDPOINT.EDITBUKU(id), {
+    const formData = new FormData();
+    formData.append('judul', data.judul);
+    formData.append('kategori', data.kategori);
+    formData.append('ringkasan', data.ringkasan);
+    formData.append('penulis', data.penulis);
+    formData.append('image', data.image); // Ini adalah file gambar
+    formData.append('readUrl', data.readUrl);
+
+    const response = await fetch(API_ENDPOINT.EDITBUKU(data.id), {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
         token,
       },
-      body: JSON.stringify(data),
+      body: formData, // Mengirimkan FormData sebagai body
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
+
     const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal menambahkan buku');
+      }
+    }
     return responseJson;
   }
 
@@ -64,11 +76,15 @@ class KidsLibraryDbSource {
         token,
       },
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
     const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Hapus buku');
+      }
+    }
     return responseJson;
   }
 
@@ -80,11 +96,15 @@ class KidsLibraryDbSource {
         token,
       },
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
     const responseJson = await response.json();
+    if (!response.ok) {
+      // Handle both array and single string error messages
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Buku Tidak Ditemukan');
+      }
+    }
     return responseJson.buku;
   }
 

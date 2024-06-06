@@ -2,8 +2,10 @@
 import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../../utils/auth';
 import KidsLibraryDbSouce from '../../../data/kidslibrarydb-source';
+import UrlParser from '../../../routes/url-parser';
+import { createFormbuku } from '../../templates/template-creator';
 
-const TambahBuku = {
+const EditBuku = {
   async render() {
     return `
     <style>
@@ -66,59 +68,9 @@ const TambahBuku = {
 
     </style>
     <div class="form">
-      <h1>Masukkan Data Buku</h1>
+      <h1>Edit Data Buku</h1>
       <div class="errors"></div>
-      <form id="tambahForm" method="post" enctype="multipart/form-data">
-        <div class="form-control">
-          <label for="judul">Judul :</label>
-          <input
-            placeholder="Judul"
-            type="text"
-            name="judul" id="judul"
-            required
-            autofocus
-          />
-        </div>
-        <div class="form-control">
-          <label for="kategori">Kategori :</label>
-          <select name="kategori" id="kategori">
-            <option value="Religi">Religi</option>
-            <option value="Dongeng">Dongeng</option>
-            <option value="Pendidikan">Pendidikan</option>
-            <option value="Lainnya">Lainnya</option>
-          </select>
-        </div>
-        <div class="form-control">
-          <label for="ringkasan">Ringkasan :</label>
-          <textarea
-            placeholder="Ringkasan"
-            name="ringkasan" id="ringkasan"
-            type="text"
-            rows="10"
-            required
-          ></textarea>
-        </div>
-        <div class="form-control">
-          <label for="penulis">Penulis :</label>
-          <input placeholder="Penulis" name="penulis" id="penulis" type="text" required />
-        </div>
-        <div class="form-control">
-          <label for="imageUrl">Image url :</label>
-          <input
-            placeholder="Image_url"
-            name="imageUrl" id="imageUrl"
-            type="file"
-            required
-          />
-        </div>
-        <div class="form-control">
-          <label for="readUrl">Read url :</label>
-          <input placeholder="Read Url" name="readUrl" id="readUrl" type="text" required />
-        </div>
-        <div class="form-control">
-          <button class="submit">Submit</button>
-        </div>
-      </form>
+      <div class="formContainer"></div>
     </div>
     `;
   },
@@ -128,10 +80,11 @@ const TambahBuku = {
       window.location.href = '/#/masuk'; // Alihkan ke halaman login jika belum login
       return;
     }
-
+    const url = UrlParser.parseActiveUrlWithoutCombiner();
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
+    console.log(url.id);
     if (userRole !== 'Admin') {
       window.location.href = '/#/masuk';
       return;
@@ -143,11 +96,23 @@ const TambahBuku = {
       item.classList.remove('active');
     });
     menuactive.classList.add('active');
+    try {
+      const buku = await KidsLibraryDbSouce.detailBuku(url.id);
+      const formContainer = document.querySelector('.formContainer');
+      formContainer.innerHTML = createFormbuku(buku);
+    } catch (error) {
+      if (Array.isArray(error.messages)) {
+        console.log(error.messages);
+      } else {
+        console.log(error.message);
+      }
+    }
 
     const tambahForm = document.getElementById('tambahForm');
     tambahForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const data = {
+        id: url.id,
         judul: document.querySelector('#judul').value,
         kategori: document.querySelector('#kategori').value,
         ringkasan: document.querySelector('#ringkasan').value,
@@ -156,7 +121,7 @@ const TambahBuku = {
         readUrl: document.querySelector('#readUrl').value,
       };
       try {
-        const response = await KidsLibraryDbSouce.tambahBuku(data);
+        const response = await KidsLibraryDbSouce.editBuku(data);
         alert(response.message); // Tampilkan pesan sukses
         window.location.href = '/admin#/dashboard'; // Alihkan ke halaman masuk setelah berhasil
       } catch (error) {
@@ -172,4 +137,4 @@ const TambahBuku = {
   },
 };
 
-export default TambahBuku;
+export default EditBuku;

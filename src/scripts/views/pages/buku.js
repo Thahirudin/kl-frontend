@@ -1,7 +1,7 @@
 import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 
 const Buku = {
-  BOOKS_PER_PAGE: 2,
+  BOOKS_PER_PAGE: 10,
 
   async render() {
     return `
@@ -22,7 +22,7 @@ const Buku = {
 
   async afterRender() {
     this._bukuList = await KidsLibraryDbSource.getAllBuku();
-    this._filteredBukuList = [...this._bukuList];
+    this._filteredBukuList = [...this._bukuList.buku];
     this._currentPage = 1;
 
     this._renderBooks();

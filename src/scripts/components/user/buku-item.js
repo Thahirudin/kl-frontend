@@ -1,3 +1,5 @@
+import CONFIG from '../../globals/config';
+
 class BukuItem extends HTMLElement {
   _shadowRoot = null;
 
@@ -109,7 +111,7 @@ a{
             <div class="buku_card">
               <div class="buku_img">
                 <img
-                  src="${this._bukus.image_url}"
+                  src="${CONFIG.BASE_URL}${this._bukus.image_url}"
                   alt="${this._bukus.judul}"
                 />
               </div>
