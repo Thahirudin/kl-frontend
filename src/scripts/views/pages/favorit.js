@@ -41,14 +41,23 @@ const Favorit = {
     }
     const token = localStorage.getItem('token'); // Simpan token di localStorage
     const decodedToken = jwtDecode(token);
-    this._bukuList = await KidsLibraryDbSource.getFavoritByUserId(decodedToken.id);
-    this._filteredBukuList = [...this._bukuList];
-    this._currentPage = 1;
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
+    try {
+      loading.classList.add('open');
+      this._bukuList = await KidsLibraryDbSource.getFavoritByUserId(decodedToken.id);
+      this._filteredBukuList = [...this._bukuList];
+      this._currentPage = 1;
 
-    this._renderBooks();
-    this._renderPaginationButtons();
-    this._setupSearch();
-    this._setupCategoryFilter();
+      this._renderBooks();
+      this._renderPaginationButtons();
+      this._setupSearch();
+      this._setupCategoryFilter();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      loading.classList.remove('open');
+    }
   },
 
   _renderBooks() {
@@ -100,7 +109,7 @@ const Favorit = {
     const searchQuery = query.toLowerCase();
     const searchCategory = category.toLowerCase();
 
-    this._filteredBukuList = this._bukuList.filter((buku) => {
+    this._filteredBukuList = this._bukuList.buku.filter((buku) => {
       const matchesQuery = buku.judul.toLowerCase().includes(searchQuery);
       const matchesCategory = searchCategory === '' || buku.kategori.toLowerCase() === searchCategory;
       return matchesQuery && matchesCategory;

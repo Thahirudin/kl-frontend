@@ -145,6 +145,8 @@ const TambahBuku = {
     menuactive.classList.add('active');
 
     const tambahForm = document.getElementById('tambahForm');
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     tambahForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const data = {
@@ -156,6 +158,7 @@ const TambahBuku = {
         readUrl: document.querySelector('#readUrl').value,
       };
       try {
+        loading.classList.add('open');
         const response = await KidsLibraryDbSouce.tambahBuku(data);
         alert(response.message); // Tampilkan pesan sukses
         window.location.href = '/admin#/dashboard'; // Alihkan ke halaman masuk setelah berhasil
@@ -167,6 +170,8 @@ const TambahBuku = {
         } else {
           errors.innerHTML = `${error.message}`;
         }
+      } finally {
+        loading.classList.remove('open');
       }
     });
   },

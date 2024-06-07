@@ -78,9 +78,18 @@ const DetailBuku = {
       return;
     }
     const url = UrlParser.parseActiveUrlWithoutCombiner();
-    const buku = await KidsLibraryDbSource.detailBuku(url.id);
-    const bukuContainer = document.querySelector('#buku');
-    bukuContainer.innerHTML = createBukuDetailTemplate(buku);
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
+    try {
+      loading.classList.add('open');
+      const buku = await KidsLibraryDbSource.detailBuku(url.id);
+      const bukuContainer = document.querySelector('#buku');
+      bukuContainer.innerHTML = createBukuDetailTemplate(buku);
+    } catch (error) {
+      console.log(error.message || 'Gagal menampilkan Buku');
+    } finally {
+      loading.classList.remove('open');
+    }
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     LikeButtonInitiator.init({

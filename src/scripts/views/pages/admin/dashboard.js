@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../../utils/auth';
 import {
@@ -44,7 +45,7 @@ const Dashboard = {
       <section class="section_total">
         <div class="card_dashboard totalPengguna">
           <div class="card_title">Total Pengguna</div>
-          <div class="card_deskripsi">20</div>
+          <div class="card_deskripsi"></div>
         </div>
         <div class="card_dashboard totalBuku">
           <div class="card_title">Total Buku</div>
@@ -73,7 +74,6 @@ const Dashboard = {
       window.location.href = '/#/masuk';
       return;
     }
-
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
@@ -88,16 +88,24 @@ const Dashboard = {
       item.classList.remove('active');
     });
     menuactive.classList.add('active');
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     try {
+      loading.classList.add('open');
       const users = await KidsLibraryDbSource.getAllUser();
-      this._userList = users;
+      this._userList = users.users;
+      const totalPengguna = document.querySelector('.totalPengguna .card_deskripsi');
+      totalPengguna.innerHTML = `${users.totalUser}`;
       this._renderUsers();
       this._renderUserPaginationButtons();
     } catch (err) {
       console.error(err.message || 'Gagal menampilkan User');
+    } finally {
+      loading.classList.remove('open');
     }
 
     try {
+      loading.classList.add('open');
       const books = await KidsLibraryDbSource.getAllBuku();
       this._bookList = books.buku;
       const totalBuku = document.querySelector('.totalBuku .card_deskripsi');
@@ -106,6 +114,8 @@ const Dashboard = {
       this._renderBookPaginationButtons();
     } catch (err) {
       console.error(err.message || 'Gagal menampilkan Buku');
+    } finally {
+      loading.classList.remove('open');
     }
   },
 
@@ -166,11 +176,13 @@ const Dashboard = {
     const deleteBookButtons = document.querySelectorAll('.delete_button');
     deleteBookButtons.forEach((button) => {
       button.addEventListener('click', async (event) => {
+        const loading = document.querySelector('.loading');
+        loading.classList.remove('open');
         const bookId = event.target.dataset.idBuku;
         const confirmation = confirm('Apakah Anda yakin ingin menghapus buku ini?');
         if (confirmation) {
           try {
-            // Panggil fungsi untuk menghapus buku
+            loading.classList.add('open');
             const response = await KidsLibraryDbSource.hapusBuku(bookId);
             // Tampilkan pesan berhasil
             alert(response.message);
@@ -179,6 +191,8 @@ const Dashboard = {
           } catch (error) {
             // Tangani error jika ada
             console.error(error.message || 'Gagal menghapus buku');
+          } finally {
+            loading.classList.remove('open');
           }
         }
       });

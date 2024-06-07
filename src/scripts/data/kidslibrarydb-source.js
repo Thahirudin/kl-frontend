@@ -148,21 +148,32 @@ class KidsLibraryDbSource {
     return responseJson;
   }
 
-  static async editUser(data, id) {
+  static async editUser(data) {
     const token = localStorage.getItem('token');
-    const response = await fetch(API_ENDPOINT.editUser(id), {
+    const formData = new FormData();
+    formData.append('nama', data.nama);
+    formData.append('email', data.email);
+    formData.append('tanggalLahir', data.tanggalLahir);
+    formData.append('jk', data.jk);
+    formData.append('image', data.image);
+    formData.append('username', data.username);
+    formData.append('password', data.password);
+    formData.append('role', data.role);
+    const response = await fetch(API_ENDPOINT.EDITUSER(data.id), {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
         token,
       },
-      body: JSON.stringify(data),
+      body: formData,
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
     const responseJson = await response.json();
+    if (!response.ok) {
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Edit User');
+      }
+    }
     return responseJson;
   }
 
@@ -174,12 +185,16 @@ class KidsLibraryDbSource {
         token,
       },
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
     const responseJson = await response.json();
-    return responseJson.user;
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal menambahkan buku');
+      }
+    }
+    return responseJson;
   }
 
   static async getAllUser() {
@@ -191,7 +206,7 @@ class KidsLibraryDbSource {
       },
     });
     const responseJson = await response.json();
-    return responseJson.users;
+    return responseJson;
   }
 
   static async hapusUser(id) {

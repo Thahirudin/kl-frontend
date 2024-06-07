@@ -26,7 +26,7 @@ class navBar extends HTMLElement {
       if (userRole === 'Admin') {
         buttonContainer.innerHTML = '<button id="logoutButton">Keluar</button><a class="nav_register" href="./admin#/dashboard">Dashboard</a>';
       } else {
-        buttonContainer.innerHTML = '<button id="logoutButton">Keluar</button><a class="nav_register" href="./admin#/profil">Profil</a>';
+        buttonContainer.innerHTML = '<button id="logoutButton">Keluar</button><a class="nav_register" href="./#/profil">Profil</a>';
       }
     } else {
       buttonContainer.innerHTML = '';
@@ -82,7 +82,7 @@ class navBar extends HTMLElement {
       if (userRole === 'Admin') {
         buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button><a class="nav_register" href="./admin#/dashboard">Dashboard</a>';
       } else {
-        buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button><a class="nav_register" href="./admin#/profil">Profil</a>';
+        buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button><a class="nav_register" href="./#/profil">Profil</a>';
       }
     } else {
       buttonContainer.innerHTML = '';

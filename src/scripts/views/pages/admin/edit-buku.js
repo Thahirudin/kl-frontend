@@ -84,7 +84,6 @@ const EditBuku = {
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
-    console.log(url.id);
     if (userRole !== 'Admin') {
       window.location.href = '/#/masuk';
       return;
@@ -96,7 +95,10 @@ const EditBuku = {
       item.classList.remove('active');
     });
     menuactive.classList.add('active');
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     try {
+      loading.classList.add('open');
       const buku = await KidsLibraryDbSouce.detailBuku(url.id);
       const formContainer = document.querySelector('.formContainer');
       formContainer.innerHTML = createFormbuku(buku);
@@ -106,6 +108,8 @@ const EditBuku = {
       } else {
         console.log(error.message);
       }
+    } finally {
+      loading.classList.remove('open');
     }
 
     const tambahForm = document.getElementById('tambahForm');
@@ -121,6 +125,7 @@ const EditBuku = {
         readUrl: document.querySelector('#readUrl').value,
       };
       try {
+        loading.classList.add('open');
         const response = await KidsLibraryDbSouce.editBuku(data);
         alert(response.message); // Tampilkan pesan sukses
         window.location.href = '/admin#/dashboard'; // Alihkan ke halaman masuk setelah berhasil
@@ -132,6 +137,8 @@ const EditBuku = {
         } else {
           errors.innerHTML = `${error.message}`;
         }
+      } finally {
+        loading.classList.remove('open');
       }
     });
   },

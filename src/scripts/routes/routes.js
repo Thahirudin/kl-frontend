@@ -5,6 +5,7 @@ import Buku from '../views/pages/buku';
 import Favorit from '../views/pages/favorit';
 import DetailBuku from '../views/pages/detail-buku';
 import Tentangkami from '../views/pages/tentang-kami';
+import Profil from '../views/pages/profil';
 
 const routes = {
   '/': Beranda,
@@ -15,6 +16,7 @@ const routes = {
   '/daftar': Daftar,
   '/detail-buku/:id': DetailBuku,
   '/tentang-kami': Tentangkami,
+  '/profil': Profil,
 };
 
 export default routes;

@@ -78,7 +78,7 @@ class asideBar extends HTMLElement {
               >
             </li>
             <li>
-              <a href="#" class="menu-profil"
+              <a href="./#/profil" class="menu-profil"
                 ><svg
                   width="22"
                   height="16"

@@ -113,6 +113,77 @@ const createSuccessModalTemplate = () => `
 </div>
 `;
 
+const formEditUser = (user) => `
+<form id="formEditUser" action="" method="post" enctype="multipart/form-data">
+            <div class="form-control">
+              <label for="nama">Nama :</label>
+              <input
+                placeholder="Nama"
+                type="text"
+                name="nama"
+                id="nama" value="${user.nama}"
+                required
+              />
+            </div>
+            <div class="form-control">
+              <label for="email">Email :</label>
+              <input
+                placeholder="Email"
+                type="email"
+                name="email"
+                id="email" value="${user.email}"
+              />
+            </div>
+            <div class="form-control">
+              <label for="tanggalLahir">Tanggal Lahir :</label>
+              <input
+                placeholder="Tanggal Lahir"
+                type="date"
+                name="tanggalLahir"
+                id="tanggalLahir" value="${new Date(user.tanggalLahir).toISOString().substr(0, 10)}"
+                required
+              />
+            </div>
+            <div class="form-control">
+              <label for="jk">Jenis Kelamin :</label>
+              <select name="jk" id="jk">
+                <option value="Laki-Laki" ${user.jk === 'Laki-Laki' ? 'selected' : ''}>Laki-laki</option>
+                <option value="Perempuan" ${user.jk === 'Perempuan' ? 'selected' : ''}>Perempuan</option>
+              </select>
+            </div>
+            <div class="form-control">
+              <label for="profil">Ganti Profil :</label>
+              <input
+                type="file"
+                name="profil"
+                id="profil"
+              />
+            </div>
+            <div class="form-control">
+              <label for="penulis">Username :</label>
+              <input
+                placeholder="Username"
+                name="username"
+                id="username"
+                type="text" value="${user.username}"
+                required
+              />
+            </div>
+            <div class="form-control">
+              <label for="password">Ganti Password :</label>
+              <input
+                placeholder="Password "
+                name="password"
+                id="password"
+                type="password"
+              />
+            </div>
+            <div class="form-control">
+              <button class="submit" type="submit">Simpan</button>
+            </div>
+          </form>
+`;
+
 const tableDataBukuTemplate = (buku) => `
 <tr>
   <td>${buku.judul}</td>
@@ -269,4 +340,5 @@ export {
   createFormbuku,
   createDeleteModalTemplate,
   createSuccessModalTemplate,
+  formEditUser,
 };

@@ -7,7 +7,7 @@ import {
 } from '../../templates/template-creator';
 
 const Buku = {
-  BOOKS_PER_PAGE: 2, // Tetapkan jumlah buku per halaman
+  BOOKS_PER_PAGE: 5, // Tetapkan jumlah buku per halaman
 
   async render() {
     return `
@@ -68,7 +68,10 @@ const Buku = {
     menuactive.classList.add('active');
     const sectionModal = document.querySelector('.sectionModal');
     sectionModal.innerHTML = createDeleteModalTemplate({ judul: 'Hapus data' }) + createSuccessModalTemplate();
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     try {
+      loading.classList.add('open');
       const bukus = await KidsLibraryDbSource.getAllBuku();
       this._bukuList = bukus.buku;
       this._filteredBukuList = [...this._bukuList];
@@ -82,16 +85,19 @@ const Buku = {
       } else {
         console.log(err.message || 'Gagal menampilkan Buku');
       }
+    } finally {
+      loading.classList.remove('open');
     }
     const deleteButtons = document.querySelectorAll('.delete_button');
     deleteButtons.forEach((deleteButton) => {
       deleteButton.addEventListener('click', async (event) => {
-        // Mengambil idBuku dari atribut data tombol yang diklik
+        loading.classList.remove('open');
         const { idBuku } = event.target.dataset;
 
         const confirmation = confirm('Apakah Anda yakin ingin menghapus buku ini?');
         if (confirmation) {
           try {
+            loading.classList.add('open');
             const response = await KidsLibraryDbSource.hapusBuku(idBuku);
             alert(response.message);
             window.location.reload();
@@ -101,6 +107,8 @@ const Buku = {
             } else {
               alert(error.messages);
             }
+          } finally {
+            loading.classList.remove('open');
           }
         }
       });

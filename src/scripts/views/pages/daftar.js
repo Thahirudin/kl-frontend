@@ -48,11 +48,15 @@ const Daftar = {
         profil: '',
         tanggalLahir: document.querySelector('#tanggalLahir').value,
         role: 'User',
+        email: '',
         jk: document.querySelector('#jk').value,
         username: document.querySelector('#username').value,
         password: document.querySelector('#password').value,
       };
+      const loading = document.querySelector('.loading');
+      loading.classList.remove('open');
       try {
+        loading.classList.add('open');
         const response = await KidsLibraryDbSource.tambahUser(data);
         alert(response.message);
         window.location.href = '/#/masuk';
@@ -62,6 +66,8 @@ const Daftar = {
         } else {
           errors.innerHTML = `${error.message}`;
         }
+      } finally {
+        loading.classList.remove('open');
       }
     });
   },

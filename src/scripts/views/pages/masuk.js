@@ -48,8 +48,10 @@ const Masuk = {
         username,
         password,
       };
-
+      const loading = document.querySelector('.loading');
+      loading.classList.remove('open');
       try {
+        loading.classList.add('open');
         const result = await KidsLibraryDbSource.loginUser(data);
         const { token } = result;
         if (token) {
@@ -68,6 +70,8 @@ const Masuk = {
         }
       } catch (error) {
         alert(`Login gagal: ${error.message}`); // Tampilkan pesan kesalahan
+      } finally {
+        loading.classList.remove('open');
       }
     });
   },
