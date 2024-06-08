@@ -2,6 +2,7 @@
 import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../../utils/auth';
 import KidsLibraryDbSouce from '../../../data/kidslibrarydb-source';
+import { createModalTemplate } from '../../templates/template-creator';
 
 const TambahBuku = {
   async render() {
@@ -120,6 +121,7 @@ const TambahBuku = {
         </div>
       </form>
     </div>
+    <div class="modal"></div>
     `;
   },
 
@@ -136,7 +138,7 @@ const TambahBuku = {
       window.location.href = '/#/masuk';
       return;
     }
-
+    const modal = document.querySelector('.modal');
     const menuItems = document.querySelectorAll('.menu a');
     const menuactive = document.querySelector('.menu-buku');
     menuItems.forEach((item) => {
@@ -160,8 +162,19 @@ const TambahBuku = {
       try {
         loading.classList.add('open');
         const response = await KidsLibraryDbSouce.tambahBuku(data);
-        alert(response.message); // Tampilkan pesan sukses
-        window.location.href = '/admin#/dashboard'; // Alihkan ke halaman masuk setelah berhasil
+        const modalData = {
+          title: 'Berhasil',
+          message: response.message,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+          window.location.href = '/admin#/buku';
+        });
       } catch (error) {
         const errors = document.querySelector('.errors');
         errors.innerHTML = '';

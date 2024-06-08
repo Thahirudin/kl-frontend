@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-alert */
 import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
+import { createModalTemplate } from '../templates/template-creator';
 
 const Daftar = {
   async render() {
@@ -33,6 +34,7 @@ const Daftar = {
         </form>
       </div>
     </div>
+    <div class="modal"></div>
     `;
   },
 
@@ -40,7 +42,7 @@ const Daftar = {
     const errors = document.querySelector('.errors');
     errors.innerHTML = '';
     const regisForm = document.getElementById('regisForm');
-
+    const modal = document.querySelector('.modal');
     regisForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const data = {
@@ -58,8 +60,19 @@ const Daftar = {
       try {
         loading.classList.add('open');
         const response = await KidsLibraryDbSource.tambahUser(data);
-        alert(response.message);
-        window.location.href = '/#/masuk';
+        const modalData = {
+          title: 'Berhasil',
+          message: response.message,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+          window.location.href = '/#/masuk';
+        });
       } catch (error) {
         if (error.messages) {
           errors.innerHTML = `${error.messages}`;

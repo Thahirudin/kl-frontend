@@ -46,7 +46,7 @@ const Profil = {
             color: white;
             border: none;
             border-radius: 0.6rem;
-            padding: 0.8rem;
+            padding: 1rem;
             width: 100%;
             cursor: pointer;
           }

@@ -49,7 +49,11 @@ a{
   }
 }
 .buku_img {
+display:flex;
+justify-content: center;
+align-items:center;
   margin: auto;
+  height: 200px;
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -65,9 +69,11 @@ a{
   font-size: 18px;
 }
 .buku_img img {
-  height: 200px;
+  max-height: 200px;
+  width: 100%;
   filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  border-radius: 0.5rem;
 }
 
       `;

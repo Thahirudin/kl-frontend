@@ -2,9 +2,7 @@
 import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../../utils/auth';
 import KidsLibraryDbSource from '../../../data/kidslibrarydb-source';
-import {
-  createDeleteModalTemplate, createSuccessModalTemplate, tableBukuTemplate, tableDataBukuTemplate,
-} from '../../templates/template-creator';
+import { tableBukuTemplate, tableDataBukuTemplate } from '../../templates/template-creator';
 
 const Buku = {
   BOOKS_PER_PAGE: 5, // Tetapkan jumlah buku per halaman
@@ -42,7 +40,6 @@ const Buku = {
         <div class="table_responsive table_buku"></div>
       <div class="pagination" id="pagination"></div>
       </section>
-      <section class="sectionModal"></section>
     `;
   },
 
@@ -66,8 +63,6 @@ const Buku = {
       item.classList.remove('active');
     });
     menuactive.classList.add('active');
-    const sectionModal = document.querySelector('.sectionModal');
-    sectionModal.innerHTML = createDeleteModalTemplate({ judul: 'Hapus data' }) + createSuccessModalTemplate();
     const loading = document.querySelector('.loading');
     loading.classList.remove('open');
     try {

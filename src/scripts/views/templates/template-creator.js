@@ -12,37 +12,38 @@ const createLikedButtonTemplate = () => `
   </button>
 `;
 
-const createDeleteModalTemplate = (modal) => `
+const createModalTemplate = (modal) => `
 <style>
-    .modalbg.open{
-        opacity: 1; /* Tampilkan saat modal terbuka */
-    visibility: visible;
-    .modal-container{
+    .modalbg.open {
+      opacity: 1; /* Tampilkan saat modal terbuka */
+      visibility: visible;
+      .modal-container {
         transform: translateY(0);
-    }
+      }
     }
     .modalbg {
-      position: fixed; /* Tetapkan posisi tetap */
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100vw; /* Lebar penuh layar */
-      height: 100vh; /* Tinggi penuh layar */
-      background-color: rgba(0, 0, 0, 0.5); /* Latar belakang semi transparan */
-      display: flex; /* Gunakan Flexbox */
-      justify-content: center; /* Pusatkan secara horizontal */
-      align-items: center; /* Pusatkan secara vertikal */
-      visibility: hidden; /* Awalnya tidak terlihat */
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
       z-index: 1000;
       .modal-container {
-        transform: translateY(-20px); /* Awalnya sedikit bergeser ke atas */
-    transition: transform 0.5s ease;
-        background-color: white; /* Warna latar belakang modal */
+        transform: translateY(-20px);
+        transition: transform 0.5s ease;
+        background-color: white;
         padding: 1rem;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px; /* Opsional: untuk sudut yang melengkung */
-        max-width: 90%; /* Batasan lebar maksimal agar responsif */
-        max-height: 90%; /* Batasan tinggi maksimal agar responsif */
+        border-radius: 8px;
+        min-width:300px;
+        max-width: 90%;
+        max-height: 90%;
         overflow-y: auto;
         .modal-header {
           padding: 1rem;
@@ -79,38 +80,20 @@ const createDeleteModalTemplate = (modal) => `
       }
     }
   </style>
-<div class="modalbg delete-modal">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2>${modal.judul}</h2>
-    </div>
-    <hr />
-    <div class="modal-body">
-      <p>Kamu Yakin Ingin Menghapus ini</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn-submit">Submit</button>
-      <button type="button" class="btn-close">Close</button>
-    </div>
-  </div>
-</div>
-`;
-
-const createSuccessModalTemplate = () => `
-<div class="modalbg success-modal">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2>Berhasil</h2>
-    </div>
-    <hr />
-    <div class="modal-body">
-      <p>Buku berhasil dihapus</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn-close">Close</button>
-    </div>
-  </div>
-</div>
+      <div class="modalbg">
+        <div class="modal-container">
+          <div class="modal-header">
+            <h2>${modal.title}</h2>
+          </div>
+          <hr />
+          <div class="modal-body">
+            <p>${modal.message}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-submit">Oke</button>
+          </div>
+        </div>
+      </div>
 `;
 
 const formEditUser = (user) => `
@@ -338,7 +321,6 @@ export {
   tableUserTemplate,
   tableDataUserTemplate,
   createFormbuku,
-  createDeleteModalTemplate,
-  createSuccessModalTemplate,
+  createModalTemplate,
   formEditUser,
 };

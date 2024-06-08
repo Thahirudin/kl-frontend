@@ -120,11 +120,10 @@ class KidsLibraryDbSource {
     });
     const responseJson = await response.json();
     if (!response.ok) {
-      // Handle both array and single string error messages
       if (Array.isArray(responseJson.messages)) {
         throw new Error(responseJson.messages.join(', '));
       } else {
-        throw new Error(responseJson.message || 'Failed to add user');
+        throw new Error(responseJson.message || 'Gagal Tambah user');
       }
     }
     return responseJson;
@@ -140,11 +139,14 @@ class KidsLibraryDbSource {
       },
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson.messages);
-    }
     const responseJson = await response.json();
+    if (!response.ok) {
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Login');
+      }
+    }
     return responseJson;
   }
 

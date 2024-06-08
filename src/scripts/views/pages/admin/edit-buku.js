@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../../utils/auth';
 import KidsLibraryDbSouce from '../../../data/kidslibrarydb-source';
 import UrlParser from '../../../routes/url-parser';
-import { createFormbuku } from '../../templates/template-creator';
+import { createFormbuku, createModalTemplate } from '../../templates/template-creator';
 
 const EditBuku = {
   async render() {
@@ -72,6 +72,8 @@ const EditBuku = {
       <div class="errors"></div>
       <div class="formContainer"></div>
     </div>
+    <div class="modal"></div>
+
     `;
   },
 
@@ -88,7 +90,7 @@ const EditBuku = {
       window.location.href = '/#/masuk';
       return;
     }
-
+    const modal = document.querySelector('.modal');
     const menuItems = document.querySelectorAll('.menu a');
     const menuactive = document.querySelector('.menu-buku');
     menuItems.forEach((item) => {
@@ -104,9 +106,31 @@ const EditBuku = {
       formContainer.innerHTML = createFormbuku(buku);
     } catch (error) {
       if (Array.isArray(error.messages)) {
-        console.log(error.messages);
+        const modalData = {
+          title: 'Gagal',
+          message: error.messages,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+        });
       } else {
-        console.log(error.message);
+        const modalData = {
+          title: 'Gagal',
+          message: error.message,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+        });
       }
     } finally {
       loading.classList.remove('open');
@@ -127,8 +151,19 @@ const EditBuku = {
       try {
         loading.classList.add('open');
         const response = await KidsLibraryDbSouce.editBuku(data);
-        alert(response.message); // Tampilkan pesan sukses
-        window.location.href = '/admin#/dashboard'; // Alihkan ke halaman masuk setelah berhasil
+        const modalData = {
+          title: 'Berhasil',
+          message: response.message,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+          window.location.href = '/admin#/buku';
+        });
       } catch (error) {
         const errors = document.querySelector('.errors');
         errors.innerHTML = '';

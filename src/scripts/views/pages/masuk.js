@@ -2,6 +2,7 @@
 import { jwtDecode } from 'jwt-decode';
 import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 import isUserLoggedIn from '../../utils/auth';
+import { createModalTemplate } from '../templates/template-creator';
 
 const Masuk = {
   async render() {
@@ -21,6 +22,7 @@ const Masuk = {
           </form>
         </div>
       </div>
+      <div class="modal"></div>
     `;
   },
 
@@ -32,16 +34,14 @@ const Masuk = {
 
       if (userRole === 'Admin') {
         window.location.href = '/admin#/dashboard';
-        window.location.reload();
       } else {
         window.location.href = '/#/favorit';
-        window.location.reload();
       }
     }
+    const modal = document.querySelector('.modal');
     const loginForm = document.getElementById('loginForm');
     loginForm.addEventListener('submit', async (event) => {
-      event.preventDefault(); // Mencegah form submit default
-
+      event.preventDefault();
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       const data = {
@@ -55,21 +55,71 @@ const Masuk = {
         const result = await KidsLibraryDbSource.loginUser(data);
         const { token } = result;
         if (token) {
-          localStorage.setItem('token', token); // Simpan token di localStorage
-          window.dispatchEvent(new CustomEvent('userLoggedIn')); // Kirim event kustom 'userLoggedIn'
+          localStorage.setItem('token', token);
+          window.dispatchEvent(new CustomEvent('userLoggedIn'));
           const decodedToken = jwtDecode(token);
           const userRole = decodedToken.role;
           if (userRole === 'Admin') {
-            window.location.href = '/admin#/dashboard'; // Arahkan ke halaman dashboard
+            const modalData = {
+              title: 'Berhasil',
+              message: 'Berhasil Login',
+            };
+            modal.innerHTML = createModalTemplate(modalData);
+            const modalBg = document.querySelector('.modalbg');
+            modalBg.classList.add('open');
+            const submitModalButton = document.querySelector('.btn-submit');
+            submitModalButton.addEventListener('click', () => {
+              modalBg.classList.remove('open');
+              modal.innerHTML = '';
+              window.location.href = '/admin#/dashboard';
+            });
           } else {
-            window.location.href = '/#/favorit'; // Arahkan ke halaman favorit
-            window.location.reload();
+            const modalData = {
+              title: 'Berhasil',
+              message: 'Berhasil Login',
+            };
+            modal.innerHTML = createModalTemplate(modalData);
+            const modalBg = document.querySelector('.modalbg');
+            modalBg.classList.add('open');
+            const submitModalButton = document.querySelector('.btn-submit');
+            submitModalButton.addEventListener('click', () => {
+              modalBg.classList.remove('open');
+              modal.innerHTML = '';
+              window.location.href = '/#/favorit';
+              window.location.reload();
+            });
           }
         } else {
           throw new Error('Token not received');
         }
       } catch (error) {
-        alert(`Login gagal: ${error.message}`); // Tampilkan pesan kesalahan
+        if (Array.isArray(error.messages)) {
+          const modalData = {
+            title: 'Gagal',
+            message: error.messages,
+          };
+          modal.innerHTML = createModalTemplate(modalData);
+          const modalBg = document.querySelector('.modalbg');
+          modalBg.classList.add('open');
+          const submitModalButton = document.querySelector('.btn-submit');
+          submitModalButton.addEventListener('click', () => {
+            modalBg.classList.remove('open');
+            modal.innerHTML = '';
+          });
+        } else {
+          const modalData = {
+            title: 'Gagal',
+            message: error.message,
+          };
+          modal.innerHTML = createModalTemplate(modalData);
+          const modalBg = document.querySelector('.modalbg');
+          modalBg.classList.add('open');
+          const submitModalButton = document.querySelector('.btn-submit');
+          submitModalButton.addEventListener('click', () => {
+            modalBg.classList.remove('open');
+            modal.innerHTML = '';
+          });
+        }
       } finally {
         loading.classList.remove('open');
       }
