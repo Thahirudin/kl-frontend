@@ -94,7 +94,7 @@ const TentangKami = {
       <section>
         <div class="tentang_kids">
           <div class="tentang_kids_img">
-            <img src="./logo/logo.png" alt="logo">
+            <img class="lazyload" src="./logo/logo.png" alt="logo">
           </div>
           <div class="tentang_kids_text">
             <div class="tentang_kids_title">
@@ -112,15 +112,15 @@ const TentangKami = {
           <div class="team_description">Kami adalah sekelompok mahasiswa Indonesia yang berfokus dalam dunia software developer khususnya dalam bidang Front-End dan Back End. Misi perpustakaan anak adalah membantu meningkatkan literasi pada anak-anak melalui penyediaan akses yang mudah terhadap buku dan sumber daya pendidikan yang menarik, serta menyelenggarakan program-program yang mendukung pengembangan keterampilan membaca, pemahaman, dan imajinasi kreatif.</div>
           <div class="team_member">
             <div class="team_card">
-              <div class="team_card_img"><img src="./img/thahirudin.jpg" alt="Angga"></div>
+              <div class="team_card_img"><img class="lazyload" src="./img/thahirudin.jpg" alt="Angga"></div>
               <div class="team_card_name"><h2>Angga Cahyo krisnanto</h2></div>
             </div>
             <div class="team_card">
-              <div class="team_card_img"><img src="./img/thahirudin.jpg" alt="Farhan"></div>
+              <div class="team_card_img"><img class="lazyload" src="./img/thahirudin.jpg" alt="Farhan"></div>
               <div class="team_card_name"><h2>Farhan Putra Bunga Mayang</h2></div>
             </div>
             <div class="team_card">
-              <div class="team_card_img"><img src="./img/thahirudin.jpg" alt="Thahirudin"></div>
+              <div class="team_card_img"><img class="lazyload" src="./img/thahirudin.jpg" alt="Thahirudin"></div>
               <div class="team_card_name"><h2>Thahirudin</h2></div>
             </div>
           </div>

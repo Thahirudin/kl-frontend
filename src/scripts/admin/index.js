@@ -1,6 +1,9 @@
 import 'regenerator-runtime';
 import '../components/admin/aside-bar';
 import '../../styles/style-admin.css';
+import swRegister from '../utils/sw-register';
+import 'lazysizes';
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import App from '../views/app';
 
 const app = new App({
@@ -16,4 +19,5 @@ window.addEventListener('hashchange', () => {
 
 window.addEventListener('load', () => {
   app.renderPage();
+  swRegister();
 });

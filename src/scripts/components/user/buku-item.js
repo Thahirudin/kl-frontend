@@ -53,7 +53,6 @@ display:flex;
 justify-content: center;
 align-items:center;
   margin: auto;
-  height: 200px;
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -69,8 +68,8 @@ align-items:center;
   font-size: 18px;
 }
 .buku_img img {
-  max-height: 200px;
-  width: 100%;
+  max-width: 100%;
+    max-height: 200px;
   filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
   border-radius: 0.5rem;
@@ -116,7 +115,7 @@ align-items:center;
         <a href="#/detail-buku/${this._bukus.id}">
             <div class="buku_card">
               <div class="buku_img">
-                <img
+                <img class="lazyload"
                   src="${CONFIG.BASE_URL}${this._bukus.image_url}"
                   alt="${this._bukus.judul}"
                 />

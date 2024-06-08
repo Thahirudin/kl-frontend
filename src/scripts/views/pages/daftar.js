@@ -8,7 +8,7 @@ const Daftar = {
     return `
     <div class="register-container">
       <div class="register-box">
-        <img src="./logo/logo.png" alt="Kids Library" class="logo" />
+        <img src="./logo/logo.png" alt="Kids Library" class="logo lazyload" />
         <form id="regisForm">
           <div class="errors"></div>
           <div class="input-container">

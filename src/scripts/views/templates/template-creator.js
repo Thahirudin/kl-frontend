@@ -277,7 +277,7 @@ const tableUserTemplate = () => `
 const createBukuDetailTemplate = (buku) => `
   <div class="buku_container">
           <div class="buku_img">
-            <img
+            <img class="lazyload"
               src="${CONFIG.BASE_URL}${buku.imageUrl}"
               alt="gambar buku"
             />

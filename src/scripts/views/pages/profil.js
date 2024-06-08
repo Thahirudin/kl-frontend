@@ -92,7 +92,7 @@ const Profil = {
       formContainer.innerHTML = formEditUser(user.user);
       const profilImage = document.querySelector('.profil');
       profilImage.innerHTML = `
-            <img src="${user.profil !== '' ? `${CONFIG.BASE_URL}${user.user.profil}` : './img/profil.png'}" alt="profil" />
+            <img class="lazyload" src="${user.profil !== '' ? `${CONFIG.BASE_URL}${user.user.profil}` : './img/profil.png'}" alt="profil" />
         `;
     } catch (err) {
       if (Array.isArray(err.messages)) {
