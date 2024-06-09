@@ -20,13 +20,18 @@ const LikeButtonInitiator = {
   },
 
   async _isBukuExist(bukuId) {
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     try {
+      loading.classList.add('open');
       const response = await KidsLibraryDbSource.getFavoritByUserId(this._userId);
       const numberBukuId = Number(bukuId);
       return response.some((favorite) => favorite.bukuId === numberBukuId);
     } catch (error) {
       console.error('Error checking if book exists:', error);
       return false;
+    } finally {
+      loading.classList.remove('open');
     }
   },
 
@@ -35,23 +40,48 @@ const LikeButtonInitiator = {
       userId: this._userId,
       bukuId: this._buku.id,
     };
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     try {
+      loading.classList.add('open');
       await KidsLibraryDbSource.tambahFavorit(payload);
+      window.location.reload();
     } catch (error) {
-      alert(`Login gagal: ${error.message}`);
+      if (Array.isArray(error.messages)) {
+        console.log(error.messages);
+      } else {
+        console.log(error.message);
+      }
+      window.location.reload();
+    } finally {
+      loading.classList.remove('open');
     }
   },
 
   async _removeFromFavorites() {
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
     try {
+      loading.classList.add('open');
       const response = await KidsLibraryDbSource.getFavoritByUserId(this._userId);
       const numberBukuId = Number(this._buku.id);
       const favorite = response.find((fav) => fav.bukuId === numberBukuId);
       if (favorite) {
         await KidsLibraryDbSource.hapusFavorit(favorite.id);
+        this._renderButton();
+        window.location.reload();
       }
+      this._renderButton();
+      window.location.reload();
     } catch (error) {
-      alert(`Login gagal: ${error.message}`);
+      if (Array.isArray(error.messages)) {
+        console.log(error.messages);
+      } else {
+        console.log(error.message);
+      }
+      window.location.reload();
+    } finally {
+      loading.classList.remove('open');
     }
   },
 
@@ -62,6 +92,7 @@ const LikeButtonInitiator = {
     likeButton.addEventListener('click', async () => {
       await this._addToFavorites();
       this._renderButton();
+      window.location.reload();
     });
   },
 

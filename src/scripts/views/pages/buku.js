@@ -1,7 +1,7 @@
 import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 
 const Buku = {
-  BOOKS_PER_PAGE: 9,
+  BOOKS_PER_PAGE: 8,
 
   async render() {
     return `

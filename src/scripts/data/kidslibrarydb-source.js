@@ -238,11 +238,15 @@ class KidsLibraryDbSource {
       },
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson);
-    }
     const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message);
+      }
+    }
     return responseJson;
   }
 

@@ -1,5 +1,4 @@
 const { merge } = require('webpack-merge');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const common = require('./webpack.common');
 
 module.exports = merge(common, {
@@ -44,19 +43,4 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [
-    new WorkboxWebpackPlugin.GenerateSW({
-      swDest: 'sw.bundle.js',
-      mode: 'production',
-      runtimeCaching: [
-        {
-          urlPattern: ({ url }) => url.href.startsWith('https://kids-library-production.up.railway.app'),
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheName: 'kidslibrary-api',
-          },
-        },
-      ],
-    }),
-  ],
 });

@@ -64,7 +64,7 @@ const Favorit = {
     const bukuContainer = document.querySelector('buku-container');
     const start = (this._currentPage - 1) * this.BOOKS_PER_PAGE;
     const end = start + this.BOOKS_PER_PAGE;
-    const paginatedBooks = this._filteredBukuList.slice(start, end);
+    const paginatedBooks = this._filteredBukuList.slice(start, end).map((item) => item.Buku);
 
     bukuContainer.setBukuList(paginatedBooks);
   },
@@ -109,7 +109,8 @@ const Favorit = {
     const searchQuery = query.toLowerCase();
     const searchCategory = category.toLowerCase();
 
-    this._filteredBukuList = this._bukuList.buku.filter((buku) => {
+    this._filteredBukuList = this._bukuList.filter((item) => {
+      const buku = item.Buku;
       const matchesQuery = buku.judul.toLowerCase().includes(searchQuery);
       const matchesCategory = searchCategory === '' || buku.kategori.toLowerCase() === searchCategory;
       return matchesQuery && matchesCategory;

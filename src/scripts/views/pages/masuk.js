@@ -9,7 +9,7 @@ const Masuk = {
     return `
       <div class="login-container">
         <div class="login-box">
-          <img src="./logo/logo.png" alt="Kids Library" class="logo lazyload" />
+          <img data-src="./logo/logo.png" alt="Kids Library" class="logo lazyload" />
           <form id="loginForm">
             <div class="input-container">
               <input type="text" id="username" placeholder="Username" required />

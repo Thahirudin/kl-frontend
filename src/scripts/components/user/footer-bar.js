@@ -17,7 +17,7 @@ class footerBar extends HTMLElement {
     <footer>
       <section class="footer_head">
         <div class="footer_logo">
-          <img class="lazyload" src="./logo/logo-putih.png" alt="logo" />
+          <img class="lazyload" data-src="./logo/logo-putih.png" alt="logo" />
           <div><p>Hidup Pintar Dengan Membaca</p></div>
         </div>
         <div class="footer_navigasi">

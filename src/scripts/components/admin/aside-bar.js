@@ -16,7 +16,7 @@ class asideBar extends HTMLElement {
     this.innerHTML = `
       <aside>
         <div class="logo">
-          <img class="lazyload" src="./logo/logo.png" alt="logo" />
+          <img class="lazyload" data-src="./logo/logo.png" alt="logo" />
         </div>
         <div>
           <ul class="menu">

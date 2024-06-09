@@ -20,7 +20,7 @@ const Beranda = {
           <div class="section_one_img">
            <picture>
             <source media="(max-width: 600px)" srcset="./img/buku.png">
-            <img class="lazyload" src="./img/buku.png" alt="logo">
+            <img class="lazyload" data-src="./img/buku.png" alt="logo">
           </picture>
           </div>
         </div>
@@ -43,7 +43,7 @@ const Beranda = {
           <div class="reason_img">
           <picture>
             <source media="(max-width: 600px)" srcset="./img/reason.png">
-            <img class="lazyload" src="./img/reason.png" alt="image">
+            <img class="lazyload" data-src="./img/reason.png" alt="image">
           </picture>
           </div>
           <div class="reason_reason_content">
@@ -75,7 +75,7 @@ const Beranda = {
           <div class="membaca_img">
           <picture>
             <source media="(max-width: 600px)" srcset="./img/membaca.png">
-            <img class="lazyload" src="./img/membaca.png" alt="image">
+            <img class="lazyload" data-src="./img/membaca.png" alt="image">
           </picture>
           </div>
         </div>
