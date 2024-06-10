@@ -3,7 +3,7 @@ import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 import isUserLoggedIn from '../../utils/auth';
 
 const Favorit = {
-  BOOKS_PER_PAGE: 2,
+  BOOKS_PER_PAGE: 8,
 
   async render() {
     return `

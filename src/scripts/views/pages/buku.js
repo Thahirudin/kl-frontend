@@ -7,7 +7,7 @@ const Buku = {
     return `
       <search-bar></search-bar>
       <div class="kategori_container">
-        <select name="kategori" id="kategori" class="kategori">
+        <select name="kategori" id="kategori" class="kategori" aria-label="Kategori">
           <option value="">Kategori</option>
           <option value="Religi">Religi</option>
           <option value="Dongeng">Dongeng</option>

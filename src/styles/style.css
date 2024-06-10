@@ -93,6 +93,7 @@ nav {
 }
 .nav_head img {
   width: 100px;
+  height: auto;
 }
 .nav_head button {
   padding: 0.7rem;
@@ -144,8 +145,8 @@ nav {
   margin: 1rem 0;
   width: 100%;
   display: block;
-  background-color: #0284c7;
-  border: solid 1px #0284c7;
+  background-color: #0369a1;
+  border: solid 1px #0369a1;
   text-align: center;
   min-width: 44px;
   padding: 0.8rem 2rem;
@@ -256,7 +257,7 @@ select {
   outline: #0369a1;
 }
 footer {
-  background-color: #0ea5e9;
+  background-color: #0369a1;
   color: #ffffff;
 }
 .footer_head {
@@ -270,6 +271,7 @@ footer {
 }
 .footer_logo img {
   width: 13rem;
+  height: auto;
 }
 .footer_navigasi p {
   font-weight: 700;

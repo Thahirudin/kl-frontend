@@ -173,7 +173,7 @@ const TambahBuku = {
         submitModalButton.addEventListener('click', () => {
           modalBg.classList.remove('open');
           modal.innerHTML = '';
-          window.location.href = '/admin#/buku';
+          window.location.reload();
         });
       } catch (error) {
         const errors = document.querySelector('.errors');

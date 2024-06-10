@@ -89,8 +89,10 @@ const Profil = {
       loading.classList.add('open');
       const user = await KidsLibraryDbSource.detailUser(decodedToken.id);
       const formContainer = document.querySelector('.formContainer');
+      formContainer.innerHTML = '';
       formContainer.innerHTML = formEditUser(user.user);
       const profilImage = document.querySelector('.profil');
+      profilImage.innerHTML = '';
       profilImage.innerHTML = `
             <img class="lazyload" data-src="${user.profil !== '' ? `${CONFIG.BASE_URL}${user.user.profil}` : './img/profil.png'}" alt="profil" />
         `;
@@ -121,7 +123,6 @@ const Profil = {
         loading.classList.add('open');
         const response = await KidsLibraryDbSource.editUser(data);
         alert(response.message);
-        window.location.reload();
       } catch (error) {
         const errors = document.querySelector('.errors');
         errors.innerHTML = '';
@@ -133,6 +134,27 @@ const Profil = {
       } finally {
         loading.classList.remove('open');
       }
+      try {
+        loading.classList.add('open');
+        const user = await KidsLibraryDbSource.detailUser(decodedToken.id);
+        const formContainer = document.querySelector('.formContainer');
+        formContainer.innerHTML = '';
+        formContainer.innerHTML = formEditUser(user.user);
+        const profilImage = document.querySelector('.profil');
+        profilImage.innerHTML = '';
+        profilImage.innerHTML = `
+            <img class="lazyload" data-src="${user.profil !== '' ? `${CONFIG.BASE_URL}${user.user.profil}` : './img/profil.png'}" alt="profil" />
+        `;
+      } catch (err) {
+        if (Array.isArray(err.messages)) {
+          alert(err.messages);
+        } else {
+          alert(err.message);
+        }
+      } finally {
+        loading.classList.remove('open');
+      }
+      window.location.reload();
     });
   },
 };

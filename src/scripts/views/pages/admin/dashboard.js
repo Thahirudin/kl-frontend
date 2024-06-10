@@ -184,9 +184,13 @@ const Dashboard = {
           try {
             loading.classList.add('open');
             const response = await KidsLibraryDbSource.hapusBuku(bookId);
-            // Tampilkan pesan berhasil
             alert(response.message);
-            // Muat ulang halaman setelah menghapus buku
+            const updatedBooks = await KidsLibraryDbSource.getAllBuku();
+            this._bookList = updatedBooks.buku;
+
+            // Render ulang data buku dan tombol paginasi
+            this._renderBooks();
+            this._renderBookPaginationButtons();
             window.location.reload();
           } catch (error) {
             // Tangani error jika ada

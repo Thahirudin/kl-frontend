@@ -38,9 +38,9 @@ class navBar extends HTMLElement {
     this.innerHTML = `
         <nav>
         <div class="nav_head">
-          <img class="lazyload" data-src="./logo/logo.png" alt="logo" />
+          <img class="lazyload" data-src="./logo/logo.png" alt="logo" width="100" height="auto" />
           <div>
-            <button id="nav_hamburger_button">
+            <button id="nav_hamburger_button" aria-label="Menu Navigasi">
               <svg
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
