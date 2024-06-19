@@ -1,6 +1,6 @@
 .section_one {
   width: 100%;
-  background: url("../public/img/section-1.jpg");
+  background: url("../public/bg/section-1-small.png");
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
@@ -45,7 +45,7 @@
 }
 .reason {
   position: relative;
-  background-image: url("../public/img/section-1.jpg");
+  background-image: url("../public/bg/section-1-small.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -87,7 +87,7 @@
     color: white;
     font-weight: 700;
     min-width: 44px;
-    background-color: #0284c7;
+    background-color: #0369a1;
     padding: 0.8rem 2rem;
     border-radius: 0.8rem;
 }

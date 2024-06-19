@@ -4,34 +4,264 @@ class KidsLibraryDbSource {
   static async getAllBuku() {
     const response = await fetch(API_ENDPOINT.LISTBUKU);
     const responseJson = await response.json();
-    return responseJson.buku;
+    return responseJson;
   }
 
-  static async getBukuById(id) {
+  static async tambahBuku(data) {
     const token = localStorage.getItem('token');
-    const response = await fetch(API_ENDPOINT.DETAILBUKU(id), {
+    const formData = new FormData();
+    formData.append('judul', data.judul);
+    formData.append('kategori', data.kategori);
+    formData.append('ringkasan', data.ringkasan);
+    formData.append('penulis', data.penulis);
+    formData.append('image', data.image); // Ini adalah file gambar
+    formData.append('readUrl', data.readUrl);
+
+    const response = await fetch(API_ENDPOINT.TAMBAHBUKU, {
+      method: 'POST',
       headers: {
-        token: `${token}`,
+        token,
+      },
+      body: formData, // Mengirimkan FormData sebagai body
+    });
+
+    const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal menambahkan buku');
+      }
+    }
+    return responseJson;
+  }
+
+  static async editBuku(data) {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('judul', data.judul);
+    formData.append('kategori', data.kategori);
+    formData.append('ringkasan', data.ringkasan);
+    formData.append('penulis', data.penulis);
+    formData.append('image', data.image); // Ini adalah file gambar
+    formData.append('readUrl', data.readUrl);
+
+    const response = await fetch(API_ENDPOINT.EDITBUKU(data.id), {
+      method: 'PUT',
+      headers: {
+        token,
+      },
+      body: formData, // Mengirimkan FormData sebagai body
+    });
+
+    const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal menambahkan buku');
+      }
+    }
+    return responseJson;
+  }
+
+  static async hapusBuku(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.HAPUSBUKU(id), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        token,
       },
     });
     const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Hapus buku');
+      }
+    }
+    return responseJson;
+  }
+
+  static async detailBuku(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.DETAILBUKU(id), {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    });
+    const responseJson = await response.json();
+    if (!response.ok) {
+      // Handle both array and single string error messages
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Buku Tidak Ditemukan');
+      }
+    }
     return responseJson.buku;
   }
 
-  static async addFavorit(data) {
+  static async tambahUser(data) {
     const token = localStorage.getItem('token');
-    const options = {
+    const response = await fetch(API_ENDPOINT.TAMBAHUSER, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        token: `${token}`,
+        token,
       },
       body: JSON.stringify(data),
-    };
-    const response = await fetch(API_ENDPOINT.ADDFAVORIT, options);
+    });
+    const responseJson = await response.json();
+    if (!response.ok) {
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Tambah user');
+      }
+    }
+    return responseJson;
+  }
+
+  static async loginUser(data) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.LOGINUSER, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+      body: JSON.stringify(data),
+    });
+    const responseJson = await response.json();
+    if (!response.ok) {
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Login');
+      }
+    }
+    return responseJson;
+  }
+
+  static async editUser(data) {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('nama', data.nama);
+    formData.append('email', data.email);
+    formData.append('tanggalLahir', data.tanggalLahir);
+    formData.append('jk', data.jk);
+    formData.append('image', data.image);
+    formData.append('username', data.username);
+    formData.append('password', data.password);
+    formData.append('role', data.role);
+    const response = await fetch(API_ENDPOINT.EDITUSER(data.id), {
+      method: 'PUT',
+      headers: {
+        token,
+      },
+      body: formData,
+    });
+    const responseJson = await response.json();
+    if (!response.ok) {
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal Edit User');
+      }
+    }
+    return responseJson;
+  }
+
+  static async detailUser(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.DETAILUSER(id), {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    });
+    const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message || 'Gagal menambahkan buku');
+      }
+    }
+    return responseJson;
+  }
+
+  static async getAllUser() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.GETUSER, {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    });
+    const responseJson = await response.json();
+    return responseJson;
+  }
+
+  static async hapusUser(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.HAPUSUSER(id), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    });
     if (!response.ok) {
       const responseJson = await response.json();
-      throw new Error(responseJson.message);
+      throw new Error(responseJson);
+    }
+    const responseJson = await response.json();
+    return responseJson;
+  }
+
+  static async tambahFavorit(data) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.TAMBAHFAVORIT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+      body: JSON.stringify(data),
+    });
+    const responseJson = await response.json();
+    if (!response.ok) {
+      // Tangani kesalahan jika terjadi
+      if (Array.isArray(responseJson.messages)) {
+        throw new Error(responseJson.messages.join(', '));
+      } else {
+        throw new Error(responseJson.message);
+      }
+    }
+    return responseJson;
+  }
+
+  static async hapusFavorit(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(API_ENDPOINT.HAPUSFAVORIT(id), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    });
+    if (!response.ok) {
+      const responseJson = await response.json();
+      throw new Error(responseJson);
     }
     const responseJson = await response.json();
     return responseJson;
@@ -41,7 +271,7 @@ class KidsLibraryDbSource {
     const token = localStorage.getItem('token');
     const response = await fetch(API_ENDPOINT.FAVORITBYUSERID(id), {
       headers: {
-        token: `${token}`,
+        token,
       },
     });
     if (!response.ok) {
@@ -50,55 +280,6 @@ class KidsLibraryDbSource {
     }
     const responseJson = await response.json();
     return responseJson.favorit;
-  }
-
-  static async removeFavoritById(id) {
-    const token = localStorage.getItem('token');
-    const response = await fetch(API_ENDPOINT.REMOVEFAVORITBYID(id), {
-      method: 'DELETE',
-      headers: {
-        token: `${token}`,
-      },
-    });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson.message || 'Failed to fetch favorite books');
-    }
-    const responseJson = await response.json();
-    return responseJson;
-  }
-
-  static async login(data) {
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-
-    const response = await fetch(API_ENDPOINT.LOGIN, options);
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson.message);
-    }
-    const responseJson = await response.json();
-    return responseJson;
-  }
-
-  static async getUserById(id) {
-    const token = localStorage.getItem('token');
-    const response = await fetch(API_ENDPOINT.DETAILUSER(id), {
-      headers: {
-        token: `${token}`,
-      },
-    });
-    if (!response.ok) {
-      const responseJson = await response.json();
-      throw new Error(responseJson.message || 'User Tidak Ditemukan');
-    }
-    const responseJson = await response.json();
-    return responseJson.user;
   }
 }
 

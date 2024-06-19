@@ -1,10 +1,9 @@
-/* eslint-disable no-alert */
 import { jwtDecode } from 'jwt-decode';
 import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 import isUserLoggedIn from '../../utils/auth';
 
 const Favorit = {
-  BOOKS_PER_PAGE: 2,
+  BOOKS_PER_PAGE: 8,
 
   async render() {
     return `
@@ -37,29 +36,35 @@ const Favorit = {
 
   async afterRender() {
     if (!isUserLoggedIn()) {
-      window.location.href = '#/masuk'; // Alihkan ke halaman login jika belum login atau token kedaluwarsa
+      window.location.href = '#/masuk'; // Alihkan ke halaman login jika belum login
       return;
     }
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'); // Simpan token di localStorage
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken.id);
-    const response = await KidsLibraryDbSource.getFavoritByUserId(decodedToken.id);
-    console.log(response);
-    this._bukuList = response;
-    this._filteredBukuList = [...this._bukuList];
-    this._currentPage = 1;
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
+    try {
+      loading.classList.add('open');
+      this._bukuList = await KidsLibraryDbSource.getFavoritByUserId(decodedToken.id);
+      this._filteredBukuList = [...this._bukuList];
+      this._currentPage = 1;
 
-    this._renderBooks();
-    this._renderPaginationButtons();
-    this._setupSearch();
-    this._setupCategoryFilter();
+      this._renderBooks();
+      this._renderPaginationButtons();
+      this._setupSearch();
+      this._setupCategoryFilter();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      loading.classList.remove('open');
+    }
   },
 
   _renderBooks() {
     const bukuContainer = document.querySelector('buku-container');
     const start = (this._currentPage - 1) * this.BOOKS_PER_PAGE;
     const end = start + this.BOOKS_PER_PAGE;
-    const paginatedBooks = this._filteredBukuList.slice(start, end);
+    const paginatedBooks = this._filteredBukuList.slice(start, end).map((item) => item.Buku);
 
     bukuContainer.setBukuList(paginatedBooks);
   },
@@ -104,7 +109,8 @@ const Favorit = {
     const searchQuery = query.toLowerCase();
     const searchCategory = category.toLowerCase();
 
-    this._filteredBukuList = this._bukuList.filter((buku) => {
+    this._filteredBukuList = this._bukuList.filter((item) => {
+      const buku = item.Buku;
       const matchesQuery = buku.judul.toLowerCase().includes(searchQuery);
       const matchesCategory = searchCategory === '' || buku.kategori.toLowerCase() === searchCategory;
       return matchesQuery && matchesCategory;

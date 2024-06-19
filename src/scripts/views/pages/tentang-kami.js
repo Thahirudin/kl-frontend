@@ -33,13 +33,23 @@ const TentangKami = {
           gap: 2rem;
           justify-content: space-between;
           grid-template-columns: repeat(1, 1fr);
+          a{
+            text-decoration: none;
+            color: #000;
+            transition: 0.5s ease-in-out;
+          }
+          a:hover{
+            color: #0284c7;
+            .team_card{
+              box-shadow: 0 0 8px 0 rgb(0 0 0 / 0.25);
+            }
+          }
           .team_card {
             padding: 1rem;
             background-color: white;
             border: 1px solid #e5e7eb;
             border-radius: 1rem;
             height: 100%;
-            box-shadow: 0 0 8px 0 rgb(0 0 0 / 0.25);
             .team_card_img {
               margin-bottom: 1rem;
             }
@@ -94,7 +104,7 @@ const TentangKami = {
       <section>
         <div class="tentang_kids">
           <div class="tentang_kids_img">
-            <img src="./logo/logo.png" alt="logo">
+            <img class="lazyload" data-src="./logo/logo.png" alt="logo">
           </div>
           <div class="tentang_kids_text">
             <div class="tentang_kids_title">
@@ -111,18 +121,39 @@ const TentangKami = {
           <div class="team_title"><h1>Team Kami</h1></div>
           <div class="team_description">Kami adalah sekelompok mahasiswa Indonesia yang berfokus dalam dunia software developer khususnya dalam bidang Front-End dan Back End. Misi perpustakaan anak adalah membantu meningkatkan literasi pada anak-anak melalui penyediaan akses yang mudah terhadap buku dan sumber daya pendidikan yang menarik, serta menyelenggarakan program-program yang mendukung pengembangan keterampilan membaca, pemahaman, dan imajinasi kreatif.</div>
           <div class="team_member">
-            <div class="team_card">
-              <div class="team_card_img"><img src="./img/thahirudin.jpg" alt="Angga"></div>
-              <div class="team_card_name"><h2>Angga Cahyo krisnanto</h2></div>
-            </div>
-            <div class="team_card">
-              <div class="team_card_img"><img src="./img/thahirudin.jpg" alt="Farhan"></div>
-              <div class="team_card_name"><h2>Farhan Putra Bunga Mayang</h2></div>
-            </div>
-            <div class="team_card">
-              <div class="team_card_img"><img src="./img/thahirudin.jpg" alt="Thahirudin"></div>
-              <div class="team_card_name"><h2>Thahirudin</h2></div>
-            </div>
+            <a href="https://www.linkedin.com/in/angga-cahyo-krisnanto/" target="_blank">
+              <div class="team_card">
+                <div class="team_card_img">
+                  <picture>
+                    <source media="(max-width: 600px)" srcset="./img/Angga-small.png">
+                    <img class="lazyload" data-src="./img/Angga-large.png" alt="Angga">
+                  </picture>
+                </div>
+                <div class="team_card_name"><h2>Angga Cahyo krisnanto</h2></div>
+              </div>
+            </a>
+            <a href="https://www.linkedin.com/in/farhan-putra-bunga-mayang-2121892b3/" target="_blank">
+              <div class="team_card">
+                <div class="team_card_img">
+                  <picture>
+                    <source media="(max-width: 600px)" srcset="./img/Farhan-small.png">
+                    <img class="lazyload" data-src="./img/Farhan-large.png" alt="Farhan">
+                  </picture>
+                </div>
+                <div class="team_card_name"><h2>Farhan Putra Bunga Mayang</h2></div>
+              </div>
+            </a>
+            <a href="https://www.linkedin.com/in/thahirudin/" target="_blank">
+              <div class="team_card">
+                <div class="team_card_img">
+                  <picture>
+                    <source media="(max-width: 600px)" srcset="./img/Thahirudin-small.png">
+                    <img class="lazyload" data-src="./img/Thahirudin-large.png" alt="Thahirudin">
+                  </picture>
+                </div>
+                <div class="team_card_name"><h2>Thahirudin</h2></div>
+              </div>
+            </a>
           </div>
         </div>
       </section>

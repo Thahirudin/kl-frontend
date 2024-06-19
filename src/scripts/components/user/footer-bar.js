@@ -17,7 +17,7 @@ class footerBar extends HTMLElement {
     <footer>
       <section class="footer_head">
         <div class="footer_logo">
-          <img src="./logo/logo-putih.png" />
+          <img class="lazyload" data-src="./logo/logo-putih.png" alt="logo" width="200" height="100" />
           <div><p>Hidup Pintar Dengan Membaca</p></div>
         </div>
         <div class="footer_navigasi">
@@ -33,13 +33,13 @@ class footerBar extends HTMLElement {
           <p>Kontak</p>
           <ul>
             <li>
-              <a href="#angga">Angga Cahyo krisnanto</a>
+              <a href="https://www.linkedin.com/in/angga-cahyo-krisnanto/" target="_blank">Angga Cahyo krisnanto</a>
             </li>
             <li>
-              <a href="#farhan">Farhan Putra Bunga Mayang</a>
+              <a href="https://www.linkedin.com/in/farhan-putra-bunga-mayang-2121892b3/" target="_blank">Farhan Putra Bunga Mayang</a>
             </li>
             <li>
-              <a href="#thahirudin">Thahirudin</a>
+              <a href="https://www.linkedin.com/in/thahirudin/" target="_blank">Thahirudin</a>
             </li>
           </ul>
         </div>

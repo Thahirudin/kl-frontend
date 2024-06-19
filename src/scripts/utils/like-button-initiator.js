@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { createLikeButtonTemplate, createLikedButtonTemplate } from '../views/templates/template-creator';
 import KidsLibraryDbSource from '../data/kidslibrarydb-source';
 
@@ -18,12 +19,11 @@ const LikeButtonInitiator = {
     }
   },
 
-  async _isBukuExist(bukuid) {
+  async _isBukuExist(bukuId) {
     try {
       const response = await KidsLibraryDbSource.getFavoritByUserId(this._userId);
-      const bukuIdNumber = Number(bukuid);
-      const exists = response.some((favorit) => favorit.bukuId === bukuIdNumber);
-      return exists;
+      const numberBukuId = Number(bukuId);
+      return response.some((favorite) => favorite.bukuId === numberBukuId);
     } catch (error) {
       console.error('Error checking if book exists:', error);
       return false;
@@ -31,30 +31,35 @@ const LikeButtonInitiator = {
   },
 
   async _addToFavorites() {
-    const data = {
+    const payload = {
       userId: this._userId,
       bukuId: this._buku.id,
     };
     try {
-      const result = await KidsLibraryDbSource.addFavorit(data);
-      console.log(result);
+      await KidsLibraryDbSource.tambahFavorit(payload);
     } catch (error) {
-      console.error(error.message);
+      if (Array.isArray(error.messages)) {
+        console.log(error.messages);
+      } else {
+        console.log(error.message);
+      }
     }
   },
 
   async _removeFromFavorites() {
     try {
       const response = await KidsLibraryDbSource.getFavoritByUserId(this._userId);
-      console.log('Favorites for removal:', response);
-      const bukuIdNumber = Number(this._buku.id);
-      const favorite = response.find((fav) => fav.bukuId === bukuIdNumber);
+      const numberBukuId = Number(this._buku.id);
+      const favorite = response.find((fav) => fav.bukuId === numberBukuId);
       if (favorite) {
-        const deleteResponse = await KidsLibraryDbSource.removeFavoritById(favorite.id);
-        console.log(deleteResponse);
+        await KidsLibraryDbSource.hapusFavorit(favorite.id);
       }
     } catch (error) {
-      console.error('Error removing from favorites:', error);
+      if (Array.isArray(error.messages)) {
+        console.log(error.messages);
+      } else {
+        console.log(error.message);
+      }
     }
   },
 
@@ -63,8 +68,13 @@ const LikeButtonInitiator = {
 
     const likeButton = document.querySelector('#likeButton');
     likeButton.addEventListener('click', async () => {
+      const loading = document.querySelector('.loading');
+      loading.classList.remove('open');
+      loading.classList.add('open');
       await this._addToFavorites();
       this._renderButton();
+      window.location.reload();
+      loading.classList.remove('open');
     });
   },
 
@@ -73,8 +83,13 @@ const LikeButtonInitiator = {
 
     const likeButton = document.querySelector('#likeButton');
     likeButton.addEventListener('click', async () => {
+      const loading = document.querySelector('.loading');
+      loading.classList.remove('open');
+      loading.classList.add('open');
       await this._removeFromFavorites();
       this._renderButton();
+      window.location.reload();
+      loading.classList.remove('open');
     });
   },
 };

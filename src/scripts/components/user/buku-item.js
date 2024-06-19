@@ -1,3 +1,5 @@
+import CONFIG from '../../globals/config';
+
 class BukuItem extends HTMLElement {
   _shadowRoot = null;
 
@@ -47,6 +49,9 @@ a{
   }
 }
 .buku_img {
+display:flex;
+justify-content: center;
+align-items:center;
   margin: auto;
   text-align: center;
   margin-bottom: 1rem;
@@ -63,9 +68,11 @@ a{
   font-size: 18px;
 }
 .buku_img img {
-  height: 200px;
+  max-width: 100%;
+    max-height: 200px;
   filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  border-radius: 0.5rem;
 }
 
       `;
@@ -108,8 +115,8 @@ a{
         <a href="#/detail-buku/${this._bukus.id}">
             <div class="buku_card">
               <div class="buku_img">
-                <img
-                  src="${this._bukus.image_url}"
+                <img class="lazyload"
+                  src="${CONFIG.BASE_URL}${this._bukus.image_url}"
                   alt="${this._bukus.judul}"
                 />
               </div>

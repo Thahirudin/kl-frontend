@@ -1,8 +1,8 @@
 import { jwtDecode } from 'jwt-decode';
-import UrlParser from '../../routes/url-parser';
-import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
 import LikeButtonInitiator from '../../utils/like-button-initiator';
 import isUserLoggedIn from '../../utils/auth';
+import KidsLibraryDbSource from '../../data/kidslibrarydb-source';
+import UrlParser from '../../routes/url-parser';
 import { createBukuDetailTemplate } from '../templates/template-creator';
 
 const DetailBuku = {
@@ -67,22 +67,29 @@ const DetailBuku = {
         }
       }
     </style>
-      <section id="buku">
-        
-      </section>
+      <section id="buku"></section>
       <div id="likeButtonContainer"></div>
     `;
   },
 
   async afterRender() {
     if (!isUserLoggedIn()) {
-      window.location.href = '#/masuk'; // Alihkan ke halaman login jika belum login
+      window.location.href = '#/masuk';
       return;
     }
     const url = UrlParser.parseActiveUrlWithoutCombiner();
-    const buku = await KidsLibraryDbSource.getBukuById(url.id);
-    const bukuContainer = document.querySelector('#buku');
-    bukuContainer.innerHTML = createBukuDetailTemplate(buku);
+    const loading = document.querySelector('.loading');
+    loading.classList.remove('open');
+    try {
+      loading.classList.add('open');
+      const buku = await KidsLibraryDbSource.detailBuku(url.id);
+      const bukuContainer = document.querySelector('#buku');
+      bukuContainer.innerHTML = createBukuDetailTemplate(buku);
+    } catch (error) {
+      console.log(error.message || 'Gagal menampilkan Buku');
+    } finally {
+      loading.classList.remove('open');
+    }
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     LikeButtonInitiator.init({

@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../utils/auth';
 
 class navBar extends HTMLElement {
@@ -15,13 +16,31 @@ class navBar extends HTMLElement {
     this.render();
   }
 
+  isLogin() {
+    const buttonContainer = document.querySelector('.nav_login_register');
+    if (this.isLoggedIn) {
+      buttonContainer.innerHTML = '';
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.role;
+      if (userRole === 'Admin') {
+        buttonContainer.innerHTML = '<button id="logoutButton">Keluar</button><a class="nav_register" href="./admin#/dashboard">Dashboard</a>';
+      } else {
+        buttonContainer.innerHTML = '<button id="logoutButton">Keluar</button><a class="nav_register" href="./#/profil">Profil</a>';
+      }
+    } else {
+      buttonContainer.innerHTML = '';
+      buttonContainer.innerHTML = '<a class="nav_login" href="./#/masuk">Masuk</a> <a class="nav_register" href="./#/daftar">Daftar</a> ';
+    }
+  }
+
   render() {
     this.innerHTML = `
         <nav>
         <div class="nav_head">
-          <img src="./logo/logo.png" alt="logo" />
+          <img class="lazyload" data-src="./logo/logo.png" alt="logo" width="100" height="auto" />
           <div>
-            <button id="nav_hamburger_button">
+            <button id="nav_hamburger_button" aria-label="Menu Navigasi">
               <svg
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -48,8 +67,6 @@ class navBar extends HTMLElement {
             </ul>
           </div>
           <div class="nav_login_register">
-            <a class="nav_login" href=".#/masuk">Masuk</a>
-            <a class="nav_register" href="./#/daftar">Daftar</a>
           </div>
         </div>
       </nav>
@@ -58,18 +75,28 @@ class navBar extends HTMLElement {
 
     // Tampilkan tombol login/logout berdasarkan status login pengguna
     if (this.isLoggedIn) {
-      buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button> <a class="nav_register" href="./#/profil">Profil</a';
+      buttonContainer.innerHTML = '';
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.role;
+      if (userRole === 'Admin') {
+        buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button><a class="nav_register" href="./admin#/dashboard">Dashboard</a>';
+      } else {
+        buttonContainer.innerHTML = '<button id="logoutButton" class="nav_logout">Keluar</button><a class="nav_register" href="./#/profil">Profil</a>';
+      }
     } else {
+      buttonContainer.innerHTML = '';
       buttonContainer.innerHTML = '<a class="nav_login" href="./#/masuk">Masuk</a> <a class="nav_register" href="./#/daftar">Daftar</a> ';
     }
 
-    // Tambahkan event listener untuk tombol logout jika pengguna sudah login
     if (this.isLoggedIn) {
       const logoutButton = this.querySelector('#logoutButton');
       logoutButton.addEventListener('click', () => {
         localStorage.removeItem('token');
-        buttonContainer.innerHTML = '<a class="nav_login" href="./#/masuk">Masuk</a> <a class="nav_register" href="./#/daftar">Daftar</a> ';
-        window.location.href = './#/masuk'; // Arahkan ke halaman masuk setelah logout
+        this.isLoggedIn = false;
+        this.render();
+        window.location.href = '/#/masuk';
+        window.location.reload();
       });
     }
   }

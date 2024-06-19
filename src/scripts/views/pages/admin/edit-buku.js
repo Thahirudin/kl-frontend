@@ -2,9 +2,10 @@
 import { jwtDecode } from 'jwt-decode';
 import isUserLoggedIn from '../../../utils/auth';
 import KidsLibraryDbSouce from '../../../data/kidslibrarydb-source';
-import { createModalTemplate } from '../../templates/template-creator';
+import UrlParser from '../../../routes/url-parser';
+import { createFormbuku, createModalTemplate } from '../../templates/template-creator';
 
-const TambahBuku = {
+const EditBuku = {
   async render() {
     return `
     <style>
@@ -67,61 +68,12 @@ const TambahBuku = {
 
     </style>
     <div class="form">
-      <h1>Masukkan Data Buku</h1>
+      <h1>Edit Data Buku</h1>
       <div class="errors"></div>
-      <form id="tambahForm" method="post" enctype="multipart/form-data">
-        <div class="form-control">
-          <label for="judul">Judul :</label>
-          <input
-            placeholder="Judul"
-            type="text"
-            name="judul" id="judul"
-            required
-            autofocus
-          />
-        </div>
-        <div class="form-control">
-          <label for="kategori">Kategori :</label>
-          <select name="kategori" id="kategori">
-            <option value="Religi">Religi</option>
-            <option value="Dongeng">Dongeng</option>
-            <option value="Pendidikan">Pendidikan</option>
-            <option value="Lainnya">Lainnya</option>
-          </select>
-        </div>
-        <div class="form-control">
-          <label for="ringkasan">Ringkasan :</label>
-          <textarea
-            placeholder="Ringkasan"
-            name="ringkasan" id="ringkasan"
-            type="text"
-            rows="10"
-            required
-          ></textarea>
-        </div>
-        <div class="form-control">
-          <label for="penulis">Penulis :</label>
-          <input placeholder="Penulis" name="penulis" id="penulis" type="text" required />
-        </div>
-        <div class="form-control">
-          <label for="imageUrl">Image url :</label>
-          <input
-            placeholder="Image_url"
-            name="imageUrl" id="imageUrl"
-            type="file"
-            required
-          />
-        </div>
-        <div class="form-control">
-          <label for="readUrl">Read url :</label>
-          <input placeholder="Read Url" name="readUrl" id="readUrl" type="text" required />
-        </div>
-        <div class="form-control">
-          <button class="submit">Submit</button>
-        </div>
-      </form>
+      <div class="formContainer"></div>
     </div>
     <div class="modal"></div>
+
     `;
   },
 
@@ -130,7 +82,7 @@ const TambahBuku = {
       window.location.href = '/#/masuk'; // Alihkan ke halaman login jika belum login
       return;
     }
-
+    const url = UrlParser.parseActiveUrlWithoutCombiner();
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
@@ -145,13 +97,50 @@ const TambahBuku = {
       item.classList.remove('active');
     });
     menuactive.classList.add('active');
-
-    const tambahForm = document.getElementById('tambahForm');
     const loading = document.querySelector('.loading');
     loading.classList.remove('open');
+    try {
+      loading.classList.add('open');
+      const buku = await KidsLibraryDbSouce.detailBuku(url.id);
+      const formContainer = document.querySelector('.formContainer');
+      formContainer.innerHTML = createFormbuku(buku);
+    } catch (error) {
+      if (Array.isArray(error.messages)) {
+        const modalData = {
+          title: 'Gagal',
+          message: error.messages,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+        });
+      } else {
+        const modalData = {
+          title: 'Gagal',
+          message: error.message,
+        };
+        modal.innerHTML = createModalTemplate(modalData);
+        const modalBg = document.querySelector('.modalbg');
+        modalBg.classList.add('open');
+        const submitModalButton = document.querySelector('.btn-submit');
+        submitModalButton.addEventListener('click', () => {
+          modalBg.classList.remove('open');
+          modal.innerHTML = '';
+        });
+      }
+    } finally {
+      loading.classList.remove('open');
+    }
+
+    const tambahForm = document.getElementById('tambahForm');
     tambahForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const data = {
+        id: url.id,
         judul: document.querySelector('#judul').value,
         kategori: document.querySelector('#kategori').value,
         ringkasan: document.querySelector('#ringkasan').value,
@@ -161,7 +150,7 @@ const TambahBuku = {
       };
       try {
         loading.classList.add('open');
-        const response = await KidsLibraryDbSouce.tambahBuku(data);
+        const response = await KidsLibraryDbSouce.editBuku(data);
         const modalData = {
           title: 'Berhasil',
           message: response.message,
@@ -173,7 +162,7 @@ const TambahBuku = {
         submitModalButton.addEventListener('click', () => {
           modalBg.classList.remove('open');
           modal.innerHTML = '';
-          window.location.reload();
+          window.location.href = '/admin#/buku';
         });
       } catch (error) {
         const errors = document.querySelector('.errors');
@@ -190,4 +179,4 @@ const TambahBuku = {
   },
 };
 
-export default TambahBuku;
+export default EditBuku;
